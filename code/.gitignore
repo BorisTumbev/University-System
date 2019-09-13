@@ -1,0 +1,14 @@
+!.gitignore
+node_modules
+migrations
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+.idea/**
+agro/agro_fe/static/frontend/**
+.env
+.DS_Store
