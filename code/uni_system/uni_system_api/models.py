@@ -18,20 +18,32 @@ class Role(models.Model):
   id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
 
 class Discipline(models.Model):
+    T_CHOICES = (
+        ('L', 'Lecture'),
+        ('P', 'Practice'),
+    )
+
     name     = models.CharField(max_length=100)
     faculty  = models.CharField(choices=FACULTY_CHOICES, max_length=100)
     semester = models.PositiveIntegerField()
+    group    = models.ManyToManyField('Group')
+    type_of  = models.CharField(choices=T_CHOICES, max_length=2, null=True)
+    start    = models.TimeField(null=True)
+    end      = models.TimeField(null=True)
+
+    def __str__(self):
+        return self.name
 
 class Grade(models.Model):
-    discipline = models.ForeignKey(Discipline, on_delete=models.CASCADE, related_name='grades')
+    discipline = models.ForeignKey(Discipline, on_delete=models.CASCADE, related_name='disc_grades')
     grade      = models.PositiveSmallIntegerField()
+    student    = models.ForeignKey('StudentProfile', on_delete=models.CASCADE, related_name='st_grades', null=True)
 
     created    = models.DateTimeField(auto_now_add=True)
     updated    = models.DateTimeField(auto_now=True)
 
 class Group(models.Model):
     name       = models.CharField(max_length=50)
-    discipline = models.ForeignKey(Discipline, on_delete=models.CASCADE, related_name='groups')
     faculty    = models.CharField(choices=FACULTY_CHOICES, max_length=100)
 
 class UniUser(AbstractUser):
@@ -59,7 +71,6 @@ class StudentProfile(models.Model):
 
     user                = models.OneToOneField(UniUser, on_delete=models.CASCADE, related_name='student_profile', blank=True, null=True)
     student_num         = models.PositiveIntegerField()
-    grades              = models.ForeignKey(Grade, on_delete=models.CASCADE, related_name='student_grade', blank=True, null=True)
     qualification_type  = models.CharField(choices=QT_CHOICES, max_length=50)
     group               = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='students')
     faculty             = models.CharField(choices=FACULTY_CHOICES, max_length=50)
@@ -68,8 +79,5 @@ class StudentProfile(models.Model):
     created             = models.DateTimeField(auto_now_add=True)
     updated             = models.DateTimeField(auto_now=True)
 
-    def save(self,  *args, **kwargs):
-        self.student_num = gen_student_num(self.faculty)
-        self.roles.add(Role.objects.get_or_create(id=Role.STUDENT))
-        super().save(*args, **kwargs)
-
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name}'
