@@ -1,3 +1,4 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .utils import FACULTY_CHOICES, gen_student_num
@@ -36,7 +37,7 @@ class Discipline(models.Model):
 
 class Grade(models.Model):
     discipline = models.ForeignKey(Discipline, on_delete=models.CASCADE, related_name='disc_grades')
-    grade      = models.PositiveSmallIntegerField()
+    grade      = models.IntegerField(validators=[MaxValueValidator(6),MinValueValidator(2)])
     student    = models.ForeignKey('StudentProfile', on_delete=models.CASCADE, related_name='st_grades', null=True)
 
     created    = models.DateTimeField(auto_now_add=True)

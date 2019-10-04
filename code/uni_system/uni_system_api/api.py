@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from .models import StudentProfile, UniUser, Role, Grade
 from rest_framework import generics
 from .serializers import StudentProfileSerializer, UniUserSerializerST, UniUserSerializerStGET, \
-    TeacherProfileSerializer, UniUserSerializerTE, GradesSerializer
+    TeacherProfileSerializer, UniUserSerializerTE, GradesSerializer, StudentGradeSerializer
 
 '''STUDENTS API'''
 class StudentList(generics.ListCreateAPIView):
@@ -84,15 +84,16 @@ class GradesList(generics.ListCreateAPIView):
     queryset = Grade.objects.all()
 
 class StudentGradesDetail(generics.RetrieveUpdateAPIView):
-    serializer_class = GradesSerializer
+    serializer_class = StudentGradeSerializer
+    # queryset = Grade.objects.all()
 
     def get_queryset(self):
         user_id = self.kwargs.get('pk', '')
 
         if user_id:
-            resp = UniUser.objects.filter(id=user_id, roles=Role.TEACHER)
+            resp = Grade.objects.filter(student__id=user_id)
         else:
-            resp = UniUser.objects.filter(roles=Role.TEACHER)
+            resp = Grade.objects.all()
 
         return resp
 

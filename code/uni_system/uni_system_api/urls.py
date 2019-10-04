@@ -1,6 +1,6 @@
 from . import views
 from django.urls import path
-from .api import StudentList, TeacherList, StudentDetail, TeacherDetail, GradesList
+from .api import StudentList, TeacherList, StudentDetail, TeacherDetail, GradesList, StudentGradesDetail
 
 urlpatterns = [
     #STUDENTS URLS
@@ -13,5 +13,6 @@ urlpatterns = [
 
     #GRADES URLS
     path('api/grades', GradesList.as_view()),
+    path('api/students/grades/<int:pk>', StudentGradesDetail.as_view()),
 
 ]

@@ -55,10 +55,14 @@ class UniUserSerializerST(serializers.ModelSerializer):
 
 class UniUserSerializerStGET(serializers.ModelSerializer):
     student_profile = StudentProfileSerializerGET()
+    grades = serializers.SerializerMethodField()
 
     class Meta:
         model = UniUser
-        fields = ('id', 'student_profile', 'is_superuser', 'username', 'first_name', 'last_name', 'surname', 'email')
+        fields = ('id', 'student_profile','grades' , 'is_superuser', 'username', 'first_name', 'last_name', 'surname', 'email')
+
+    def get_grades(self, obj):
+        return GradesSerializer(obj.student_profile.st_grades.all(), many=True).data
 
 '''END STUDENT SERIALIZERS'''
 
@@ -124,5 +128,10 @@ class GradesSerializer(serializers.ModelSerializer):
         model = Grade
         fields = ('id', 'discipline', 'grade', 'student')
 
+class StudentGradeSerializer(serializers.ModelSerializer):
+    student = StudentProfileSerializerGET()
+    class Meta:
+        model = Grade
+        fields = ('id','student' ,'discipline', 'grade', 'student')
 
 '''END GRADES SERIALIZERS'''
