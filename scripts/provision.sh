@@ -28,6 +28,7 @@ pip3 install zeep==3.3.1 --user
 pip3 install python-decouple --user
 pip3 install pycryptodome==3.8.1 --user
 pip3 install django-kronos==1.0 --user
+pip3 install django-rest-auth ==0.9.5 --user
 
 #Install React
 # sudo apt-get install nodejs npm -y
