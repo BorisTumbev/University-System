@@ -33,7 +33,8 @@ export class Login extends Component {
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <Form.Item>
                         {getFieldDecorator('email', {
-                            rules: [{type: 'email', message: 'The input is not valid E-mail!'},{ required: true, message: 'Please input your E-mail!' }],
+                            rules: [{type: 'email', message: 'The input is not valid E-mail!'},
+                                    { required: true, message: 'Please input your E-mail!' }],
                         })(
                         <Input
                             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -67,7 +68,7 @@ export class Login extends Component {
 const LoginForm = Form.create()(Login);
 
 const mapStateToProps = state => ({
-//    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.token != null
 });
 
 function mapDispatchToProps(dispatch) {

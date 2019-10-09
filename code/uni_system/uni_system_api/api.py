@@ -1,8 +1,8 @@
 from rest_framework.response import Response
-from .models import StudentProfile, UniUser, Role, Grade
+from .models import StudentProfile, UniUser, Role, Grade, Group
 from rest_framework import generics
 from .serializers import StudentProfileSerializer, UniUserSerializerST, UniUserSerializerStGET, \
-    TeacherProfileSerializer, UniUserSerializerTE, GradesSerializer, StudentGradeSerializer
+    TeacherProfileSerializer, UniUserSerializerTE, GradesSerializer, StudentGradeSerializer, GroupSerializer
 
 '''STUDENTS API'''
 class StudentList(generics.ListCreateAPIView):
@@ -98,3 +98,11 @@ class StudentGradesDetail(generics.RetrieveUpdateAPIView):
         return resp
 
 '''END GRADES API'''
+
+'''GROUPS API'''
+
+class GroupList(generics.ListCreateAPIView):
+    serializer_class = GroupSerializer
+    queryset = Group.objects.all()
+
+'''END GROUPS API'''

@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .utils import gen_student_num
-from .models import UniUser, StudentProfile, Role, TeacherProfile, Grade
-
+from .models import UniUser, StudentProfile, Role, TeacherProfile, Grade, Group
 
 '''STUDENT SERIALIZERS'''
 class StudentProfileSerializer(serializers.ModelSerializer):
@@ -135,3 +134,13 @@ class StudentGradeSerializer(serializers.ModelSerializer):
         fields = ('id','student' ,'discipline', 'grade', 'student')
 
 '''END GRADES SERIALIZERS'''
+
+
+'''GROUP SERIALIZERS'''
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ('id', 'name', 'faculty')
+
+'''END GROUP SERIALIZERS'''

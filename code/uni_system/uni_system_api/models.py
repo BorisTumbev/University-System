@@ -75,7 +75,7 @@ class StudentProfile(models.Model):
     qualification_type  = models.CharField(choices=QT_CHOICES, max_length=50)
     group               = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='students')
     faculty             = models.CharField(choices=FACULTY_CHOICES, max_length=50)
-    semester            = models.PositiveIntegerField()
+    semester            = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(8),MinValueValidator(1)])
 
     created             = models.DateTimeField(auto_now_add=True)
     updated             = models.DateTimeField(auto_now=True)

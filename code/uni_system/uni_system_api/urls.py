@@ -1,6 +1,6 @@
 from . import views
 from django.urls import path
-from .api import StudentList, TeacherList, StudentDetail, TeacherDetail, GradesList, StudentGradesDetail
+from .api import StudentList, TeacherList, StudentDetail, TeacherDetail, GradesList, StudentGradesDetail, GroupList
 
 urlpatterns = [
     #STUDENTS URLS
@@ -14,5 +14,8 @@ urlpatterns = [
     #GRADES URLS
     path('api/grades', GradesList.as_view()),
     path('api/students/grades/<int:pk>', StudentGradesDetail.as_view()),
+
+    #GROUP URLS
+    path('api/groups', GroupList.as_view()),
 
 ]
