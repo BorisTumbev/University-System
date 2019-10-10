@@ -6,3 +6,5 @@ export const AUTH_LOGOUT = 'AUTH_LOGOUT';
 export const GET_GROUPS = 'GET_GROUPS';
 
 export const ADD_STUDENT = 'ADD_STUDENT';
+
+export const ADD_TEACHER = 'ADD_TEACHER';
