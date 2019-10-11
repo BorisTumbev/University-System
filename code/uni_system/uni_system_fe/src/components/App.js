@@ -5,14 +5,16 @@ import store from "../store";
 import BaseRouter from '../routes';
 import { HashRouter as Router } from 'react-router-dom';
 import 'antd/dist/antd.css';
-import { authCheckState } from '../actions/auth'
+import 'react-big-scheduler/lib/css/style.css';
+import { authCheckState, getUser } from '../actions/auth'
 import { connect } from "react-redux";
 
 
 class App extends Component{
 
     componentDidMount(){
-        this.props.authCheckState();
+        this.props.getUser();
+//        this.props.authCheckState();
     }
 
     render(){
@@ -29,6 +31,7 @@ class App extends Component{
 function mapDispatchToProps(dispatch) {
     return {
         authCheckState: () => dispatch(authCheckState()),
+        getUser: () => dispatch(getUser()),
   };
 }
 

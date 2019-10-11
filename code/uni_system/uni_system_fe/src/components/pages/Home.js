@@ -4,13 +4,13 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { authLogin } from "../../actions/auth";
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-
+import UniScheduler from '../blocks/home/Scheduler'
 
 export class Home extends Component {
 
     render() {
         return (
-            <h1>kurr</h1>
+            <UniScheduler />
         );
 
     }

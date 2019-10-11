@@ -9,10 +9,11 @@ export const authStart = () => {
     }
 }
 
-export const authSuccess = token => {
+export const authSuccess = (token, user) => {
     return {
         type: AUTH_SUCCESS,
-        token: token
+        token: token,
+        user: user
     }
 }
 
@@ -43,16 +44,17 @@ export const authLogin = (email, password) => {
 
     return dispatch => {
         dispatch(authStart());
-        axios.post('/rest-auth/login/', {
+        axios.post('/api/login', {
             email: email,
             password: password
         })
         .then(res =>{
+            console.log(res);
             const token = res.data.key;
             const expirationDate = new Date(new Date().getTime() + 3600 * 1000)
             localStorage.setItem('token', token);
             localStorage.setItem('expirationDate', expirationDate);
-            dispatch(authSuccess(token));
+            dispatch(authSuccess(token, res.data.user));
             dispatch(checkAuthTimeout(3600));
         })
         .catch(err => {
@@ -61,7 +63,8 @@ export const authLogin = (email, password) => {
     }
 }
 
-export const authCheckState = () => {
+
+export const authCheckState = (user) => {
     return dispatch => {
         const token = localStorage.getItem('token');
         if (token === undefined) {
@@ -71,10 +74,28 @@ export const authCheckState = () => {
             if ( expirationDate <= new Date() ) {
                 dispatch(logout());
             } else {
-                dispatch(authSuccess(token));
+                dispatch(authSuccess(token, user));
                 dispatch(checkAuthTimeout( (expirationDate.getTime() - new Date().getTime()) / 1000) );
             }
         }
     }
+}
+
+
+export const getUser = () => {
+        const config = {
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        };
+        return dispatch => {
+            axios.get('/api/user', config)
+            .then(res =>{
+                dispatch(authCheckState(res.data))
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
 }
 

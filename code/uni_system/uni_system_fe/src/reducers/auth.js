@@ -5,7 +5,8 @@ AUTH_START, AUTH_SUCCESS, AUTH_FAIL, AUTH_LOGOUT
 import {updateObject} from "../utils";
 
 const initialState = {
-    token: null,
+    token: localStorage.getItem('token'),
+    user: null,
     error: null,
     loading: false,
 }
@@ -20,6 +21,7 @@ const authStart = (state, action) => {
 const authSuccess = (state, action) => {
     return updateObject(state, {
         token: action.token,
+        user: action.user,
         error: null,
         loading: false
     });

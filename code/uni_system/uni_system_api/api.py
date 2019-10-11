@@ -1,8 +1,11 @@
+from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from .models import StudentProfile, UniUser, Role, Grade, Group
-from rest_framework import generics
+from rest_framework import generics, permissions
 from .serializers import StudentProfileSerializer, UniUserSerializerST, UniUserSerializerStGET, \
     TeacherProfileSerializer, UniUserSerializerTE, GradesSerializer, StudentGradeSerializer, GroupSerializer
+from rest_auth.views import LoginView
+
 
 '''STUDENTS API'''
 class StudentList(generics.ListCreateAPIView):
@@ -106,3 +109,37 @@ class GroupList(generics.ListCreateAPIView):
     queryset = Group.objects.all()
 
 '''END GROUPS API'''
+
+
+'''AUTH API'''
+class UniUserView(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+
+    def get_serializer_class(self):
+        print(self.request.user)
+        if hasattr(self.request.user, 'student_profile'):
+             return UniUserSerializerStGET
+        elif hasattr(self.request.user, 'teacher_profile'):
+            return UniUserSerializerTE
+
+    def get_object(self):
+        return self.request.user
+
+
+class UniLoginView(LoginView):
+
+    def get_response(self):
+        orginal_response = super().get_response()
+
+        user_data = {}
+        if hasattr(self.user, 'student_profile'):
+            user_data ={'user': UniUserSerializerStGET(self.user).data}
+        elif hasattr(self.user, 'teacher_profile'):
+            user_data ={'user': UniUserSerializerTE(self.user).data}
+
+        orginal_response.data.update(user_data)
+
+        return orginal_response
+
+
+'''END AUTH API'''

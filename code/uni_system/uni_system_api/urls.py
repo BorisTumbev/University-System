@@ -1,6 +1,7 @@
 from . import views
 from django.urls import path
-from .api import StudentList, TeacherList, StudentDetail, TeacherDetail, GradesList, StudentGradesDetail, GroupList
+from .api import StudentList, TeacherList, StudentDetail, TeacherDetail, GradesList, StudentGradesDetail, GroupList, \
+    UniLoginView, UniUserView
 
 urlpatterns = [
     #STUDENTS URLS
@@ -17,5 +18,9 @@ urlpatterns = [
 
     #GROUP URLS
     path('api/groups', GroupList.as_view()),
+
+    #AUTH URLS
+    path('api/login', UniLoginView.as_view()),
+    path('api/user', UniUserView.as_view()),
 
 ]
