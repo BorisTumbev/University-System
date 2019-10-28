@@ -178,6 +178,7 @@ class DisciplineScheduleSerializer(serializers.ModelSerializer):
             return "#fe0000"
 
     def get_rrule(self, obj):
-        return f'FREQ=WEEKLY;DTSTART={obj.start.strftime("%Y%m%dT%H%M%SZ")};BYDAY={WEEKDAYS[obj.start.weekday()]}'
+        return f'FREQ=WEEKLY;DTSTART={obj.start.strftime("%Y%m%dT%H%M%SZ")};' \
+               f'UNTIL={obj.rrule_end.strftime("%Y%m%dT%H%M%SZ")};BYDAY={WEEKDAYS[obj.start.weekday()]}'
 
 '''END DISCIPLINE SERIALIZERS'''

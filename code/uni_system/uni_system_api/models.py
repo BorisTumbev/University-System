@@ -36,6 +36,7 @@ class DisciplineSchedule(models.Model):
     type_of    = models.CharField(choices=T_CHOICES, max_length=2, null=True)
     start      = models.DateTimeField(null=True)
     end        = models.DateTimeField(null=True)
+    rrule_end  = models.DateTimeField(null=True)
     discipline = models.ForeignKey(Discipline, on_delete=models.CASCADE, related_name='disc_schedule')
 
 class Grade(models.Model):

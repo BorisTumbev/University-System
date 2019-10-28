@@ -19,6 +19,7 @@ class UniScheduler extends Component{
         schedulerData.localeMoment.locale('en');
         this.state = {
             viewModel: schedulerData,
+//            resources: resources,
         }
     }
 
@@ -72,7 +73,7 @@ class UniScheduler extends Component{
 
     prevClick = (schedulerData)=> {
         schedulerData.prev();
-        schedulerData.setEvents(this.state.events);
+        schedulerData.setEvents(this.props.discipline_schedule);
         this.setState({
             viewModel: schedulerData
         })
@@ -80,7 +81,7 @@ class UniScheduler extends Component{
 
     nextClick = (schedulerData)=> {
         schedulerData.next();
-        schedulerData.setEvents(this.state.events);
+        schedulerData.setEvents(this.props.discipline_schedule);
         this.setState({
             viewModel: schedulerData
         })
@@ -88,7 +89,7 @@ class UniScheduler extends Component{
 
     onViewChange = (schedulerData, view) => {
         schedulerData.setViewType(view.viewType, view.showAgenda, view.isEventPerspective);
-        schedulerData.setEvents(this.state.events);
+        schedulerData.setEvents(this.props.discipline_schedule);
         this.setState({
             viewModel: schedulerData
         })
@@ -96,7 +97,7 @@ class UniScheduler extends Component{
 
     onSelectDate = (schedulerData, date) => {
         schedulerData.setDate(date);
-        schedulerData.setEvents(this.state.events);
+        schedulerData.setEvents(this.props.discipline_schedule);
         this.setState({
             viewModel: schedulerData
         })
@@ -168,7 +169,7 @@ class UniScheduler extends Component{
     onScrollRight = (schedulerData, schedulerContent, maxScrollLeft) => {
         if(schedulerData.ViewTypes === ViewTypes.Day) {
             schedulerData.next();
-            schedulerData.setEvents(DemoData.events);
+            schedulerData.setEvents(this.props.discipline_schedule);
             this.setState({
                 viewModel: schedulerData
             });
@@ -180,7 +181,7 @@ class UniScheduler extends Component{
     onScrollLeft = (schedulerData, schedulerContent, maxScrollLeft) => {
         if(schedulerData.ViewTypes === ViewTypes.Day) {
             schedulerData.prev();
-            schedulerData.setEvents(DemoData.events);
+            schedulerData.setEvents(this.props.discipline_schedule);
             this.setState({
                 viewModel: schedulerData
             });
