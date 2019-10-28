@@ -19,21 +19,24 @@ class Role(models.Model):
   id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
 
 class Discipline(models.Model):
+    name     = models.CharField(max_length=100)
+    faculty  = models.CharField(choices=FACULTY_CHOICES, max_length=100)
+    semester = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.name
+
+class DisciplineSchedule(models.Model):
     T_CHOICES = (
         ('L', 'Lecture'),
         ('P', 'Practice'),
     )
 
-    name     = models.CharField(max_length=100)
-    faculty  = models.CharField(choices=FACULTY_CHOICES, max_length=100)
-    semester = models.PositiveIntegerField()
-    group    = models.ManyToManyField('Group')
-    type_of  = models.CharField(choices=T_CHOICES, max_length=2, null=True)
-    start    = models.TimeField(null=True)
-    end      = models.TimeField(null=True)
-
-    def __str__(self):
-        return self.name
+    group      = models.ForeignKey('Group', on_delete=models.CASCADE, related_name='group_schedule')
+    type_of    = models.CharField(choices=T_CHOICES, max_length=2, null=True)
+    start      = models.DateTimeField(null=True)
+    end        = models.DateTimeField(null=True)
+    discipline = models.ForeignKey(Discipline, on_delete=models.CASCADE, related_name='disc_schedule')
 
 class Grade(models.Model):
     discipline = models.ForeignKey(Discipline, on_delete=models.CASCADE, related_name='disc_grades')
@@ -44,6 +47,13 @@ class Grade(models.Model):
     updated    = models.DateTimeField(auto_now=True)
 
 class Group(models.Model):
+    name       = models.CharField(max_length=50)
+    major      = models.ForeignKey('Major', on_delete=models.CASCADE, related_name='group')
+
+    def __str__(self):
+        return str(self.id)
+
+class Major(models.Model):
     name       = models.CharField(max_length=50)
     faculty    = models.CharField(choices=FACULTY_CHOICES, max_length=100)
 

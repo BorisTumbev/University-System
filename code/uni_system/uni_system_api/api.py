@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
-from .models import StudentProfile, UniUser, Role, Grade, Group
+from .models import StudentProfile, UniUser, Role, Grade, Group, Discipline, DisciplineSchedule
 from rest_framework import generics, permissions
 from .serializers import StudentProfileSerializer, UniUserSerializerST, UniUserSerializerStGET, \
-    TeacherProfileSerializer, UniUserSerializerTE, GradesSerializer, StudentGradeSerializer, GroupSerializer
+    TeacherProfileSerializer, UniUserSerializerTE, GradesSerializer, StudentGradeSerializer, GroupSerializer, \
+    DisciplineSerializer, DisciplineScheduleSerializer
 from rest_auth.views import LoginView
 
 
@@ -105,9 +106,18 @@ class StudentGradesDetail(generics.RetrieveUpdateAPIView):
 '''GROUPS API'''
 
 class GroupList(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = GroupSerializer
-    queryset = Group.objects.all()
+    # queryset = Group.objects.all()
 
+    def get_queryset(self):
+
+        if hasattr(self.request.user, 'student_profile'):
+             major = self.request.user.student_profile.group.major
+        elif hasattr(self.request.user, 'teacher_profile'):
+            major = self.request.user.teacher_profile.group.major
+
+        return Group.objects.filter(major=major)
 '''END GROUPS API'''
 
 
@@ -116,7 +126,6 @@ class UniUserView(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
 
     def get_serializer_class(self):
-        print(self.request.user)
         if hasattr(self.request.user, 'student_profile'):
              return UniUserSerializerStGET
         elif hasattr(self.request.user, 'teacher_profile'):
@@ -143,3 +152,16 @@ class UniLoginView(LoginView):
 
 
 '''END AUTH API'''
+
+'''DISCIPLINE API'''
+
+class DisciplineList(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = DisciplineScheduleSerializer
+
+    def get_queryset(self):
+        print(self.request.user)
+
+        return DisciplineSchedule.objects.all()
+
+'''END DISCIPLINE API'''

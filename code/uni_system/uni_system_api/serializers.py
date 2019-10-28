@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from .utils import gen_student_num
-from .models import UniUser, StudentProfile, Role, TeacherProfile, Grade, Group
+from .utils import gen_student_num, WEEKDAYS
+from .models import UniUser, StudentProfile, Role, TeacherProfile, Grade, Group, Discipline, DisciplineSchedule
 
 '''STUDENT SERIALIZERS'''
 class StudentProfileSerializer(serializers.ModelSerializer):
@@ -141,6 +141,43 @@ class StudentGradeSerializer(serializers.ModelSerializer):
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = ('id', 'name', 'faculty')
+        fields = ('id', 'name', 'major')
 
 '''END GROUP SERIALIZERS'''
+
+'''DISCIPLINE SERIALIZERS'''
+
+class DisciplineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discipline
+        fields = ('id', 'name', 'faculty', 'semester')
+
+class DisciplineScheduleSerializer(serializers.ModelSerializer):
+    # discipline = DisciplineSerializer()
+    resourceId = serializers.SerializerMethodField()
+    title      = serializers.SerializerMethodField()
+    resizable  = serializers.ReadOnlyField(default=False)
+    movable    = serializers.ReadOnlyField(default=False)
+    bgColor    = serializers.SerializerMethodField()
+    rrule      = serializers.SerializerMethodField()
+
+    class Meta:
+        model = DisciplineSchedule
+        fields = ('id', 'resourceId','title' ,'type_of', 'start', 'end', 'bgColor', 'resizable', 'movable', 'rrule')
+
+    def get_resourceId(self, obj):
+        return obj.group.id
+
+    def get_title(self, obj):
+        return str(obj.discipline.name)
+
+    def get_bgColor(self, obj):
+        if obj.type_of == "L":
+            return "#005cfe"
+        else:
+            return "#fe0000"
+
+    def get_rrule(self, obj):
+        return f'FREQ=WEEKLY;DTSTART={obj.start.strftime("%Y%m%dT%H%M%SZ")};BYDAY={WEEKDAYS[obj.start.weekday()]}'
+
+'''END DISCIPLINE SERIALIZERS'''

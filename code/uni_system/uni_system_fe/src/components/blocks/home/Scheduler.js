@@ -6,6 +6,8 @@ import moment from 'moment';
 import Scheduler, {SchedulerData, ViewTypes, DATE_FORMAT, DemoData} from 'react-big-scheduler';
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
+import { getGroups } from "../../../actions/groups";
+import { getDiscSchedule } from "../../../actions/discipline";
 
 
 class UniScheduler extends Component{
@@ -13,97 +15,33 @@ class UniScheduler extends Component{
         super(props);
 
         //let schedulerData = new SchedulerData(new moment("2017-12-18").format(DATE_FORMAT), ViewTypes.Week);
-        let schedulerData = new SchedulerData(new moment().format(DATE_FORMAT), ViewTypes.Week);
+        var schedulerData = new SchedulerData(new moment().format(DATE_FORMAT), ViewTypes.Week);
         schedulerData.localeMoment.locale('en');
-        let resources = [
-                    {
-                       id: '41',
-                       name: '41',
-//                       groupOnly: true
-                    },
-                    {
-                       id: '41a',
-                       name: '41a'
-                    },
-                    {
-                       id: '42',
-                       name: '42',
-//                       parentId: 'r0'
-                    },
-                    {
-                       id: '42a',
-                       name: '42a',
-//                       parentId: 'r4'
-                    },
-                    {
-                       id: '43',
-                       name: '43',
-//                       parentId: 'r2'
-                    },
-                ];
-        schedulerData.setResources(resources);
-        let events = [
-                {
-                     id: 1,
-                     start: '2019-10-10 09:30:00',
-                     end: '2019-10-10 11:30:00',
-                     resourceId: '41',
-                     title: 'BM',
-                     bgColor: '#D9D9D9',
-                     resizable: false,
-                     movable: false
-
-                 },
-                 {
-                     id: 2,
-                     start: '2019-10-10 12:30:00',
-                     end: '2019-10-10 14:00:00',
-                     resourceId: '41a',
-                     title: 'Mreji',
-                     resizable: false,
-                     movable: false
-
-                 },
-                 {
-                     id: 3,
-                     start: '2019-10-10 11:00:00',
-                     end: '2019-10-10 13:00:00',
-                     resourceId: '42',
-                     title: 'ASLS',
-                     resizable: false,
-                     movable: false
-                 },
-                 {
-                     id: 4,
-                     start: '2019-10-10 14:30:00',
-                     end: '2019-10-10 15:00:00',
-                     resourceId: '42a',
-                     title: 'Himiq',
-                     resizable: false,
-                     movable: false
-                 },
-                 {
-                     id: 5,
-                     start: '2019-10-10 15:30:00',
-                     end: '2019-10-10 16:30:00',
-                     resourceId: '43',
-                     title: 'PPE',
-                     rrule: 'FREQ=WEEKLY;DTSTART=20191003T153000Z;BYDAY=TH',
-                     bgColor: '#f759ab',
-                     resizable: false,
-                     movable: false
-                 }
-             ];
-        schedulerData.setEvents(events);
         this.state = {
             viewModel: schedulerData,
-            resources: resources,
-            events: events
         }
     }
 
+    componentDidMount(){
+        this.props.getGroups();
+        this.props.getDiscSchedule();
+    }
+
     render(){
+        if (!this.props.isAuthenticated) {
+            return <Redirect to="/login" />;
+        }
         const {viewModel} = this.state;
+
+        if(this.props.groups.length > 0){
+            this.state.viewModel.setResources(this.props.groups);
+        }
+
+        if(this.props.discipline_schedule.length > 0){
+            this.state.viewModel.setEvents(this.props.discipline_schedule);
+        }
+
+
         return (
             <div>
                 <div>
@@ -269,12 +207,15 @@ class UniScheduler extends Component{
 
 
 const mapStateToProps = state => ({
-//    isAuthenticated: state.auth.token != null
+    isAuthenticated: state.auth.token != null,
+    groups: state.groups.groups,
+    discipline_schedule: state.discipline_schedule.discipline_schedule,
 });
 
 function mapDispatchToProps(dispatch) {
     return {
-//        login: (email, password) => dispatch(authLogin(email, password)),
+        getGroups: () => dispatch(getGroups()),
+        getDiscSchedule: () => dispatch(getDiscSchedule()),
   };
 }
 UniScheduler = DragDropContext(HTML5Backend)(UniScheduler);

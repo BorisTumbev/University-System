@@ -5,9 +5,13 @@ import axios from 'axios';
 
 
 export const getGroups = () => {
-
+    const config = {
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    };
     return dispatch => {
-        axios.get('/api/groups')
+        axios.get('/api/groups', config)
         .then(res =>{
             dispatch({
                 type: GET_GROUPS,

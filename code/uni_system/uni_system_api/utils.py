@@ -6,7 +6,15 @@ FACULTY_CHOICES = (
     ('FMU', 'FMU'),
 )
 
-
+WEEKDAYS = {
+    0: "MO",
+    1: "TU",
+    2: "WE",
+    3: "TH",
+    4: "FR",
+    5: "SA",
+    6: "SU",
+}
 
 def gen_student_num(fac):
     faculties = {
