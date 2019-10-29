@@ -4,11 +4,13 @@ import groups from "./groups";
 import students from "./students";
 import teachers from "./teachers";
 import discipline_schedule from "./discipline";
+import grades from "./grades";
 
 export default combineReducers({
     auth,
     groups,
     students,
     teachers,
-    discipline_schedule
+    discipline_schedule,
+    grades
 });

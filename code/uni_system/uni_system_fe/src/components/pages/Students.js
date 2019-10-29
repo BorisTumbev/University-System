@@ -5,13 +5,17 @@ import PropTypes from "prop-types";
 import { authLogin } from "../../actions/auth";
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import StudentForm from '../blocks/students/StudentForm';
+import StudentTable from '../blocks/students/StudentTable';
 
 
 export class Students extends Component {
 
     render() {
         return (
+        <>
             <StudentForm />
+            <StudentTable />
+        </>
         );
 
     }

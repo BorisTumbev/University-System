@@ -155,13 +155,22 @@ class UniLoginView(LoginView):
 
 '''DISCIPLINE API'''
 
-class DisciplineList(generics.ListCreateAPIView):
+class DisciplineScheduleList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = DisciplineScheduleSerializer
 
     def get_queryset(self):
-        print(self.request.user)
+        if hasattr(self.request.user, 'student_profile'):
+            user_major = self.request.user.student_profile.group.major
+        elif hasattr(self.request.user, 'teacher_profile'):
+            user_major = self.request.user.teacher_profile.group.major
 
-        return DisciplineSchedule.objects.all()
+        return DisciplineSchedule.objects.filter(group__major=user_major)
+
+class DisciplineList(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = DisciplineSerializer
+    queryset = Discipline.objects.all()
+
 
 '''END DISCIPLINE API'''

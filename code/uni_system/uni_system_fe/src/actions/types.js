@@ -6,7 +6,12 @@ export const AUTH_LOGOUT = 'AUTH_LOGOUT';
 export const GET_GROUPS = 'GET_GROUPS';
 
 export const ADD_STUDENT = 'ADD_STUDENT';
+export const GET_STUDENTS = 'GET_STUDENTS';
 
 export const ADD_TEACHER = 'ADD_TEACHER';
 
 export const GET_DISCIPLINE_SCHEDULE = 'GET_DISCIPLINE_SCHEDULE';
+export const GET_DISCIPLINES = 'GET_DISCIPLINES';
+
+export const GET_GRADES = 'GET_GRADES';
+export const ADD_GRADES = 'ADD_GRADES';

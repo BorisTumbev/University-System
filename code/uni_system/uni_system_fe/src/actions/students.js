@@ -1,8 +1,25 @@
 import {
-ADD_STUDENT
+ADD_STUDENT, GET_STUDENTS
 } from "./types";
 import axios from 'axios';
 
+
+export const getStudents = () => {
+
+    return dispatch => {
+        axios.get('/api/students')
+        .then(res =>{
+            dispatch({
+                type: GET_STUDENTS,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            console.log('get student error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}
 
 export const addStudent = (student) => {
 
