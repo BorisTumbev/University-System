@@ -14,4 +14,4 @@ export const GET_DISCIPLINE_SCHEDULE = 'GET_DISCIPLINE_SCHEDULE';
 export const GET_DISCIPLINES = 'GET_DISCIPLINES';
 
 export const GET_GRADES = 'GET_GRADES';
-export const ADD_GRADES = 'ADD_GRADES';
+export const ADD_GRADE = 'ADD_GRADE';

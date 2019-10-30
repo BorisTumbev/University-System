@@ -29,9 +29,7 @@ class UniScheduler extends Component{
     }
 
     render(){
-        if (!this.props.isAuthenticated) {
-            return <Redirect to="/login" />;
-        }
+
         const {viewModel} = this.state;
 
         if(this.props.groups.length > 0){

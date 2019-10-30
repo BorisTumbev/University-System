@@ -11,6 +11,9 @@ import StudentTable from '../blocks/students/StudentTable';
 export class Students extends Component {
 
     render() {
+        if (!this.props.isAuthenticated) {
+            return <Redirect to="/login" />;
+        }
         return (
         <>
             <StudentForm />
@@ -22,7 +25,7 @@ export class Students extends Component {
 }
 
 const mapStateToProps = state => ({
-//    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.token != null,
 });
 
 function mapDispatchToProps(dispatch) {

@@ -1,6 +1,25 @@
 from rest_framework import serializers
 from .utils import gen_student_num, WEEKDAYS
-from .models import UniUser, StudentProfile, Role, TeacherProfile, Grade, Group, Discipline, DisciplineSchedule
+from .models import UniUser, StudentProfile, Role, TeacherProfile, Grade, Group, Discipline, DisciplineSchedule, Major
+
+
+'''MAJOR SERIALIZERS'''
+class MajorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Major
+        fields = ('id', 'name')
+
+'''END MAJOR SERIALIZERS'''
+
+'''GROUP SERIALIZERS'''
+
+class GroupSerializer(serializers.ModelSerializer):
+    major = MajorSerializer()
+    class Meta:
+        model = Group
+        fields = ('id', 'name', 'major')
+
+'''END GROUP SERIALIZERS'''
 
 '''STUDENT SERIALIZERS'''
 class StudentProfileSerializer(serializers.ModelSerializer):
@@ -9,6 +28,7 @@ class StudentProfileSerializer(serializers.ModelSerializer):
         fields = ('id', 'qualification_type', 'group', 'faculty', 'semester')
 
 class StudentProfileSerializerGET(serializers.ModelSerializer):
+    group = GroupSerializer()
     class Meta:
         model = StudentProfile
         fields = ('id', 'student_num', 'qualification_type', 'group', 'faculty', 'semester')
@@ -58,7 +78,8 @@ class UniUserSerializerStGET(serializers.ModelSerializer):
 
     class Meta:
         model = UniUser
-        fields = ('id', 'student_profile','grades' , 'is_superuser', 'username', 'first_name', 'last_name', 'surname', 'email')
+        fields = ('id', 'student_profile','grades' , 'is_superuser', 'username', 'first_name', 'last_name', 'surname',
+                  'email', 'is_active')
 
     def get_grades(self, obj):
         return GradesSerializer(obj.student_profile.st_grades.all(), many=True).data
@@ -119,32 +140,6 @@ class UniUserSerializerTE(serializers.ModelSerializer):
 
 '''END TEACHER SERIALIZERS'''
 
-
-'''GRADES SERIALIZERS'''
-
-class GradesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Grade
-        fields = ('id', 'discipline', 'grade', 'student')
-
-class StudentGradeSerializer(serializers.ModelSerializer):
-    student = StudentProfileSerializerGET()
-    class Meta:
-        model = Grade
-        fields = ('id','student' ,'discipline', 'grade', 'student')
-
-'''END GRADES SERIALIZERS'''
-
-
-'''GROUP SERIALIZERS'''
-
-class GroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Group
-        fields = ('id', 'name', 'major')
-
-'''END GROUP SERIALIZERS'''
-
 '''DISCIPLINE SERIALIZERS'''
 
 class DisciplineSerializer(serializers.ModelSerializer):
@@ -182,3 +177,20 @@ class DisciplineScheduleSerializer(serializers.ModelSerializer):
                f'UNTIL={obj.rrule_end.strftime("%Y%m%dT%H%M%SZ")};BYDAY={WEEKDAYS[obj.start.weekday()]}'
 
 '''END DISCIPLINE SERIALIZERS'''
+
+'''GRADES SERIALIZERS'''
+
+class GradesSerializer(serializers.ModelSerializer):
+    discipline = DisciplineSerializer()
+    created = serializers.DateTimeField(format="%Y-%m-%d")
+    class Meta:
+        model = Grade
+        fields = ('id', 'discipline', 'grade', 'student', 'created')
+
+class StudentGradeSerializer(serializers.ModelSerializer):
+    student = StudentProfileSerializerGET()
+    class Meta:
+        model = Grade
+        fields = ('id','student' ,'discipline', 'grade', 'student')
+
+'''END GRADES SERIALIZERS'''

@@ -9,6 +9,9 @@ import UniScheduler from '../blocks/home/Scheduler'
 export class Home extends Component {
 
     render() {
+        if (!this.props.isAuthenticated) {
+            return <Redirect to="/login" />;
+        }
         return (
             <UniScheduler />
         );
@@ -17,7 +20,7 @@ export class Home extends Component {
 }
 
 const mapStateToProps = state => ({
-//    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.token != null,
 });
 
 function mapDispatchToProps(dispatch) {

@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { getStudents } from "../../../actions/students";
 import { addGrade } from "../../../actions/grades";
 import GradeForm from "./GradeForm"
+import StudentDetails from "./StudentDetails"
 import {
   Form,
   Input,
@@ -72,11 +73,10 @@ export class StudentTable extends Component {
     }
 
     showUserDetail(user){
-        console.log(user)
+        this.info(user)
     }
-    showGradeForm(record){
-        console.log(record)
 
+    showGradeForm(record){
         this.setState({
             visible: true,
             student: record
@@ -84,29 +84,34 @@ export class StudentTable extends Component {
     }
 
     handleOk(e) {
-        console.log(e);
         const { form } = this.formRef.props;
         form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                console.log(values);
-                values['student'] = this.state.student.id
-
+                values['student'] = this.state.student.student_profile.id
                 this.props.addGrade(values);
                 this.setState({
                     visible: false,
                 });
             }
         });
-
     };
 
     handleCancel(e) {
-        console.log(e);
         this.setState({
             visible: false,
         });
     };
 
+    info(user) {
+        Modal.info({
+        width: '60%',
+        title: '',
+        content: (
+            <StudentDetails {...user}/>
+        ),
+        onOk() {},
+        });
+    }
 
     componentDidMount(){
         this.props.getStudents();
