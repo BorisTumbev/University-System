@@ -62,6 +62,15 @@ export class StudentTable extends Component {
                     </Button>
                 )
             },
+            {
+                title: "Edit",
+                key: "edit",
+                render: (text, record) => (
+                    <Button type="primary" onClick={(e) => {this.edit(record)}}>
+                        Edit
+                    </Button>
+                )
+            },+
         ];
 
 
@@ -121,6 +130,10 @@ export class StudentTable extends Component {
         this.formRef = formRef;
     };
 
+    edit(record){
+        console.log(record);
+    }
+
     render() {
 
         return (
@@ -147,6 +160,7 @@ function mapDispatchToProps(dispatch) {
     return {
         getStudents: () => dispatch(getStudents()),
         addGrade: (grade) => dispatch(addGrade(grade)),
+        editStudent: (student) => dispatch(editStudent(student)),
   };
 }
 //const StForm = Form.create()(StudentForm);

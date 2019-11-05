@@ -82,7 +82,7 @@ class StudentProfile(models.Model):
     )
 
     user                = models.OneToOneField(UniUser, on_delete=models.CASCADE, related_name='student_profile', blank=True, null=True)
-    student_num         = models.PositiveIntegerField()
+    student_num         = models.PositiveIntegerField(blank=True, null=True)
     qualification_type  = models.CharField(choices=QT_CHOICES, max_length=50)
     group               = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='students')
     faculty             = models.CharField(choices=FACULTY_CHOICES, max_length=50)

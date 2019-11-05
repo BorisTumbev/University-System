@@ -7,6 +7,8 @@ export const GET_GROUPS = 'GET_GROUPS';
 
 export const ADD_STUDENT = 'ADD_STUDENT';
 export const GET_STUDENTS = 'GET_STUDENTS';
+export const EDIT_STUDENT = 'EDIT_STUDENT';
+export const EDIT_STUDENT_PUT = 'EDIT_STUDENT_PUT';
 
 export const ADD_TEACHER = 'ADD_TEACHER';
 

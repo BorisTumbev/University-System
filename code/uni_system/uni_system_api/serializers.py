@@ -39,7 +39,8 @@ class UniUserSerializerST(serializers.ModelSerializer):
 
     class Meta:
         model = UniUser
-        fields = ('id', 'student_profile', 'password', 'is_superuser', 'username', 'first_name', 'last_name', 'surname', 'email')
+        fields = ('id', 'student_profile', 'password', 'is_superuser', 'username', 'first_name', 'last_name', 'surname',
+                  'email', 'is_active')
 
     def create(self, validated_data):
         student_data = validated_data.pop('student_profile')
@@ -155,6 +156,8 @@ class DisciplineScheduleSerializer(serializers.ModelSerializer):
     movable    = serializers.ReadOnlyField(default=False)
     bgColor    = serializers.SerializerMethodField()
     rrule      = serializers.SerializerMethodField()
+    start      = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    end      = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
 
     class Meta:
         model = DisciplineSchedule

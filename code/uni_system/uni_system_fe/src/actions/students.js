@@ -1,5 +1,5 @@
 import {
-ADD_STUDENT, GET_STUDENTS
+ADD_STUDENT, GET_STUDENTS, EDIT_STUDENT, EDIT_STUDENT_PUT
 } from "./types";
 import axios from 'axios';
 
@@ -38,5 +38,28 @@ export const addStudent = (student) => {
     }
 }
 
+export const editStudent = (student) => {
+    return dispatch => {
+        dispatch({
+            type: EDIT_STUDENT,
+            payload: student
+        });
+    }
+}
 
+export const editStudentPut = (student) => {
 
+    return dispatch => {
+        axios.post(`/api/students/${student.id}`)
+        .then(res =>{
+            dispatch({
+                type: EDIT_STUDENT_PUT,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            console.log('edit student error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}

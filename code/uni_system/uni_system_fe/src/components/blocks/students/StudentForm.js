@@ -239,7 +239,8 @@ export class StudentForm extends Component {
 }
 
 const mapStateToProps = state => ({
-    groups: state.groups.groups
+    groups: state.groups.groups,
+    is_edit: state.students.is_edit
 });
 
 function mapDispatchToProps(dispatch) {

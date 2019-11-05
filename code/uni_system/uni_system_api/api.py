@@ -113,11 +113,11 @@ class GroupList(generics.ListCreateAPIView):
     def get_queryset(self):
 
         if hasattr(self.request.user, 'student_profile'):
-             major = self.request.user.student_profile.group.major
+            major = self.request.user.student_profile.group.major
         elif hasattr(self.request.user, 'teacher_profile'):
             major = self.request.user.teacher_profile.group.major
 
-        return Group.objects.filter(major=major)
+        return Group.objects.filter(major=major).order_by('name')
 '''END GROUPS API'''
 
 
