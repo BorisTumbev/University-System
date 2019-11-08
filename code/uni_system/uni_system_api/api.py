@@ -4,7 +4,7 @@ from .models import StudentProfile, UniUser, Role, Grade, Group, Discipline, Dis
 from rest_framework import generics, permissions
 from .serializers import StudentProfileSerializer, UniUserSerializerST, UniUserSerializerStGET, \
     TeacherProfileSerializer, UniUserSerializerTE, GradesSerializer, StudentGradeSerializer, GroupSerializer, \
-    DisciplineSerializer, DisciplineScheduleSerializer
+    DisciplineSerializer, DisciplineScheduleSerializer, GradesSerializerPost
 from rest_auth.views import LoginView
 
 
@@ -84,8 +84,14 @@ class TeacherDetail(generics.RetrieveUpdateDestroyAPIView):
 '''GRADES API'''
 
 class GradesList(generics.ListCreateAPIView):
-    serializer_class = GradesSerializer
+    # serializer_class = GradesSerializer
     queryset = Grade.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return GradesSerializer
+        else:
+            return GradesSerializerPost
 
 class StudentGradesDetail(generics.RetrieveUpdateAPIView):
     serializer_class = StudentGradeSerializer

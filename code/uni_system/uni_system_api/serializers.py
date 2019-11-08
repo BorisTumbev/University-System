@@ -42,6 +42,11 @@ class UniUserSerializerST(serializers.ModelSerializer):
         fields = ('id', 'student_profile', 'password', 'is_superuser', 'username', 'first_name', 'last_name', 'surname',
                   'email', 'is_active')
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.context['request'].method == "PUT":
+            self.fields.pop('password')
+
     def create(self, validated_data):
         student_data = validated_data.pop('student_profile')
         password = validated_data.pop('password')
@@ -62,13 +67,15 @@ class UniUserSerializerST(serializers.ModelSerializer):
         st_obj = instance.student_profile
 
         student_data = validated_data.pop('student_profile')
-        password = validated_data.pop('password')
+        if 'password' in validated_data:
+            password = validated_data.pop('password')
+            user_obj.set_password(password)
+            user_obj.save()
+
         user_data = validated_data
 
         StudentProfile.objects.filter(id=st_obj.id).update(**student_data)
 
-        user_obj.set_password(password)
-        user_obj.save()
         UniUser.objects.filter(id=user_obj.id).update(**user_data)
 
         return user_obj
@@ -189,6 +196,11 @@ class GradesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grade
         fields = ('id', 'discipline', 'grade', 'student', 'created')
+
+class GradesSerializerPost(serializers.ModelSerializer):
+    class Meta:
+        model = Grade
+        fields = ('id', 'discipline', 'grade', 'student')
 
 class StudentGradeSerializer(serializers.ModelSerializer):
     student = StudentProfileSerializerGET()

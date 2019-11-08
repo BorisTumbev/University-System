@@ -1,5 +1,5 @@
 import {
-ADD_STUDENT, GET_STUDENTS, EDIT_STUDENT, EDIT_STUDENT_PUT
+ADD_STUDENT, GET_STUDENTS, EDIT_STUDENT, EDIT_STUDENT_PUT, CHANGE_IS_EDIT_FALSE
 } from "./types";
 import axios from 'axios';
 
@@ -47,10 +47,20 @@ export const editStudent = (student) => {
     }
 }
 
+export const changeIsEditFalse = () => {
+    return dispatch => {
+        dispatch({
+            type: CHANGE_IS_EDIT_FALSE,
+//            payload:
+        });
+    }
+}
+
 export const editStudentPut = (student) => {
 
+    console.log(student)
     return dispatch => {
-        axios.post(`/api/students/${student.id}`)
+        axios.put(`/api/students/${student.id}`, student)
         .then(res =>{
             dispatch({
                 type: EDIT_STUDENT_PUT,

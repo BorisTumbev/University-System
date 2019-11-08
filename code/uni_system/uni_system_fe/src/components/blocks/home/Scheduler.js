@@ -16,7 +16,7 @@ class UniScheduler extends Component{
 
         //let schedulerData = new SchedulerData(new moment("2017-12-18").format(DATE_FORMAT), ViewTypes.Week);
         var schedulerData = new SchedulerData(new moment().format(DATE_FORMAT), ViewTypes.Week);
-        schedulerData.localeMoment.locale('en');
+//        schedulerData.localeMoment.locale('bg');
         this.state = {
             viewModel: schedulerData,
 //            resources: resources,

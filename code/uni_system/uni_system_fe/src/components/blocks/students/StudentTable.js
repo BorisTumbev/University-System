@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getStudents } from "../../../actions/students";
+import { getStudents, editStudent, editStudentPut } from "../../../actions/students";
 import { addGrade } from "../../../actions/grades";
 import GradeForm from "./GradeForm"
 import StudentDetails from "./StudentDetails"
+import StudentForm from './StudentForm';
 import {
   Form,
   Input,
@@ -70,7 +71,7 @@ export class StudentTable extends Component {
                         Edit
                     </Button>
                 )
-            },+
+            }
         ];
 
 
@@ -78,6 +79,7 @@ export class StudentTable extends Component {
             table_columns: columns,
             visible: false,
             student: undefined,
+            showStudentFormEdit: false,
         }
     }
 
@@ -105,9 +107,42 @@ export class StudentTable extends Component {
         });
     };
 
+    handleStOk(e) {
+        const { form } = this.formStRef.props;
+        form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                var values_to_post = {
+                    id: this.state.student.id,
+                    student_profile: {
+                        qualification_type: values.qualification_type,
+                        group: values.group,
+                        faculty: values.faculty,
+                        semester: values.semester
+                    },
+                    is_superuser: values.is_superuser,
+                    username: values.username,
+                    first_name: values.first_name,
+                    last_name: values.last_name,
+                    surname: values.surname,
+                    email: values.email
+                }
+                this.props.editStudentPut(values_to_post);
+                this.setState({
+                    showStudentFormEdit: false,
+                });
+            }
+        });
+    };
+
     handleCancel(e) {
         this.setState({
             visible: false,
+        });
+    };
+
+    handleStCancel(e) {
+        this.setState({
+            showStudentFormEdit: false,
         });
     };
 
@@ -130,8 +165,30 @@ export class StudentTable extends Component {
         this.formRef = formRef;
     };
 
+    saveStFormRef = formStRef => {
+        this.formStRef = formStRef;
+    };
+
     edit(record){
+        const { form } = this.formStRef.props;
+        form.setFieldsValue({
+            email: record.email,
+            username: record.username,
+            first_name: record.first_name,
+            surname: record.surname,
+            last_name: record.last_name,
+            group: record.student_profile.group.id,
+            qualification_type: record.student_profile.qualification_type,
+            faculty: record.student_profile.faculty,
+            semester: record.student_profile.semester,
+            is_superuser: record.is_superuser,
+        })
+//        this.props.editStudent(record);
         console.log(record);
+        this.setState({
+            showStudentFormEdit: true,
+            student: record,
+        });
     }
 
     render() {
@@ -146,14 +203,21 @@ export class StudentTable extends Component {
               onOk={(e) => {this.handleOk(e)}}
               onCancel={(e) => {this.handleCancel(e)}}
             />
+            <StudentForm
+              wrappedComponentRef={this.saveStFormRef}
+              visible={this.state.showStudentFormEdit}
+              is_edit={true}
+              onOk={(e) => {this.handleStOk(e)}}
+              onCancel={(e) => {this.handleStCancel(e)}}
+            />
         </>
         );
-
     }
 }
 
 const mapStateToProps = state => ({
-    students: state.students.students
+    students: state.students.students,
+    groups: state.groups.groups,
 });
 
 function mapDispatchToProps(dispatch) {
@@ -161,6 +225,7 @@ function mapDispatchToProps(dispatch) {
         getStudents: () => dispatch(getStudents()),
         addGrade: (grade) => dispatch(addGrade(grade)),
         editStudent: (student) => dispatch(editStudent(student)),
+        editStudentPut: (student) => dispatch(editStudentPut(student)),
   };
 }
 //const StForm = Form.create()(StudentForm);

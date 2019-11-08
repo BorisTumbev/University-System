@@ -9,6 +9,7 @@ export const ADD_STUDENT = 'ADD_STUDENT';
 export const GET_STUDENTS = 'GET_STUDENTS';
 export const EDIT_STUDENT = 'EDIT_STUDENT';
 export const EDIT_STUDENT_PUT = 'EDIT_STUDENT_PUT';
+export const CHANGE_IS_EDIT_FALSE = 'CHANGE_IS_EDIT_FALSE';
 
 export const ADD_TEACHER = 'ADD_TEACHER';
 
