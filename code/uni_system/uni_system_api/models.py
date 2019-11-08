@@ -93,3 +93,28 @@ class StudentProfile(models.Model):
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
+
+
+class Survey(models.Model):
+    title   = models.CharField(max_length=255)
+    major   = models.ForeignKey(Major, on_delete=models.CASCADE, related_name='survey')
+
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+class Question(models.Model):
+    title    = models.CharField(max_length=255)
+    required = models.BooleanField(default=True)
+    survey   = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='question')
+
+class Answer(models.Model):
+    title    = models.CharField(max_length=255)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answer')
+
+class QuestionResolveLog(models.Model):
+    user     = models.ForeignKey(UniUser, on_delete=models.CASCADE, related_name='survey_log')
+    survey   = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='log')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='question_log')
+    answer   = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='answer_log')
+
+    created  = models.DateTimeField(auto_now_add=True)

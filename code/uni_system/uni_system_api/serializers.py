@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .utils import gen_student_num, WEEKDAYS
-from .models import UniUser, StudentProfile, Role, TeacherProfile, Grade, Group, Discipline, DisciplineSchedule, Major
-
+from .models import UniUser, StudentProfile, Role, TeacherProfile, Grade, Group, Discipline, DisciplineSchedule, Major, \
+    Survey, Question, Answer
 
 '''MAJOR SERIALIZERS'''
 class MajorSerializer(serializers.ModelSerializer):
@@ -206,6 +206,43 @@ class StudentGradeSerializer(serializers.ModelSerializer):
     student = StudentProfileSerializerGET()
     class Meta:
         model = Grade
-        fields = ('id','student' ,'discipline', 'grade', 'student')
+        fields = ('id', 'student', 'discipline', 'grade', 'student')
 
 '''END GRADES SERIALIZERS'''
+
+'''SURVEY SERIALIZERS'''
+class AnswerSerializier(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ('id', 'title')
+
+class QuestionSerializier(serializers.ModelSerializer):
+    answers = AnswerSerializier(source='answer', many=True)
+    class Meta:
+        model = Question
+        fields = ('id', 'title', 'required', 'answers')
+
+class SurveySerializer(serializers.ModelSerializer):
+    questions = QuestionSerializier(source='question', many=True)
+
+    class Meta:
+        model = Survey
+        fields = ('id', 'title', 'major', 'questions')
+
+    def create(self, validated_data):
+        questions = validated_data.pop('question')
+
+        s_obj = Survey(**validated_data)
+        s_obj.save()
+
+        for q in questions:
+            answers = q.pop('answer')
+            q_obj = Question(survey=s_obj, **q)
+            q_obj.save()
+            for a in answers:
+                a_obj = Answer(question=q_obj, **a)
+                a_obj.save()
+
+        return s_obj
+
+'''END SURVEY SERIALIZERS'''
