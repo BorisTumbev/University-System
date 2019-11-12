@@ -1,10 +1,10 @@
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
-from .models import StudentProfile, UniUser, Role, Grade, Group, Discipline, DisciplineSchedule, Survey
+from .models import StudentProfile, UniUser, Role, Grade, Group, Discipline, DisciplineSchedule, Survey, Major
 from rest_framework import generics, permissions
 from .serializers import StudentProfileSerializer, UniUserSerializerST, UniUserSerializerStGET, \
     TeacherProfileSerializer, UniUserSerializerTE, GradesSerializer, StudentGradeSerializer, GroupSerializer, \
-    DisciplineSerializer, DisciplineScheduleSerializer, GradesSerializerPost, SurveySerializer
+    DisciplineSerializer, DisciplineScheduleSerializer, GradesSerializerPost, SurveySerializer, MajorSerializer
 from rest_auth.views import LoginView
 
 
@@ -188,3 +188,11 @@ class SurveyList(generics.ListCreateAPIView):
     queryset = Survey.objects.all()
 
 '''END SURVEY API'''
+
+'''MAJOR API'''
+
+class MajorList(generics.ListCreateAPIView):
+    serializer_class = MajorSerializer
+    queryset = Major.objects.all()
+
+'''MAJOR API'''

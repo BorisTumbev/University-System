@@ -6,6 +6,7 @@ import Home from "./components/pages/Home";
 import Students from "./components/pages/Students";
 import Teachers from "./components/pages/Teachers";
 import Profile from "./components/pages/Profile";
+import Survey from "./components/pages/Survey";
 
 const BaseRouter = () => (
   <div>
@@ -14,6 +15,7 @@ const BaseRouter = () => (
     <Route exact path="/students" component={Students} />
     <Route exact path="/teachers" component={Teachers} />
     <Route exact path="/profile" component={Profile} />
+    <Route exact path="/survey" component={Survey} />
   </div>
 );
 

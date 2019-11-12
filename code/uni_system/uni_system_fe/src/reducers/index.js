@@ -5,6 +5,7 @@ import students from "./students";
 import teachers from "./teachers";
 import discipline_schedule from "./discipline";
 import grades from "./grades";
+import major from "./major";
 
 export default combineReducers({
     auth,
@@ -12,5 +13,6 @@ export default combineReducers({
     students,
     teachers,
     discipline_schedule,
-    grades
+    grades,
+    major
 });

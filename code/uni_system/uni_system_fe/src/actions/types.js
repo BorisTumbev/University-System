@@ -18,3 +18,5 @@ export const GET_DISCIPLINES = 'GET_DISCIPLINES';
 
 export const GET_GRADES = 'GET_GRADES';
 export const ADD_GRADE = 'ADD_GRADE';
+
+export const GET_MAJORS = 'GET_MAJORS';

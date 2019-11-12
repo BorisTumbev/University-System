@@ -1,7 +1,7 @@
 from . import views
 from django.urls import path
 from .api import StudentList, TeacherList, StudentDetail, TeacherDetail, GradesList, StudentGradesDetail, GroupList, \
-    UniLoginView, UniUserView, DisciplineScheduleList, DisciplineList, SurveyList
+    UniLoginView, UniUserView, DisciplineScheduleList, DisciplineList, SurveyList, MajorList
 
 urlpatterns = [
     #STUDENTS URLS
@@ -29,5 +29,8 @@ urlpatterns = [
 
     #SURVEY URLS
     path('api/survey', SurveyList.as_view()),
+
+    #MAJOR URSL
+    path('api/majors', MajorList.as_view()),
 
 ]
