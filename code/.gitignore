@@ -9,6 +9,6 @@ __pycache__/
 local_settings.py
 db.sqlite3
 .idea/**
-agro/agro_fe/static/frontend/**
+uni_system/uni_system_fe/static/frontend/**
 .env
 .DS_Store
