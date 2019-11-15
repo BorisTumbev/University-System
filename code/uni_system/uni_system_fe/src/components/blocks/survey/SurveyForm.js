@@ -3,6 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getMajors } from "../../../actions/major";
+import { addSurvey } from "../../../actions/survey";
 import {
   Form,
   Input,
@@ -90,7 +91,30 @@ export class SurveyForm extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log("Received values of form: ", values);
+                var questions = [];
+
+                Object.entries(values).forEach(([key, value]) => {
+                    if(key.startsWith('question')){
+                        var index = questions.push({
+                                    title:value,
+                                    answers:[]
+                                }) -1;
+                        Object.entries(values).forEach(([k, v]) => {
+                            if(k.startsWith('answer') && key.slice(-2) === k.slice(-2)){
+                                questions[index].answers.push({
+                                    title: v
+                                })
+                            }
+                        })
+                    }
+                });
+
+                var values_to_post = {
+                    title: values.title,
+                    major: values.major,
+                    questions: questions
+                };
+                this.props.addSurvey(values_to_post);
             }
         });
     };
@@ -111,8 +135,8 @@ export class SurveyForm extends Component {
             that.state.answer_arr[e].map(function(a, a_i){
                 answers.push(
                     <div key={a_i} style={{marginLeft:"65px"}}>
-                        <Form.Item label="answer">
-                            {getFieldDecorator('answer' + a + e, {
+                        <Form.Item label={`answer - ${a_i + 1}`}>
+                            {getFieldDecorator(`answer-${a}-${e}`, {
                                 rules: [{ required: true,
                                     message: 'Please input answer!'
                                 }],
@@ -131,8 +155,8 @@ export class SurveyForm extends Component {
             })
             return(
                 <div key={i} style={{marginLeft:"20px"}}>
-                    <Form.Item label="question">
-                        {getFieldDecorator('question' + e, {
+                    <Form.Item label={`question - ${i + 1}`}>
+                        {getFieldDecorator(`question-${e}`, {
                         rules: [{ required: true,
                                   message: 'Please input question!'
                         }],
@@ -222,6 +246,7 @@ const mapStateToProps = state => ({
 function mapDispatchToProps(dispatch) {
     return {
         getMajors: () => dispatch(getMajors()),
+        addSurvey: (survey) => dispatch(addSurvey(survey)),
   };
 }
 const SuForm = Form.create()(SurveyForm);
