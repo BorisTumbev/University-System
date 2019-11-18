@@ -187,6 +187,13 @@ class SurveyList(generics.ListCreateAPIView):
     serializer_class = SurveySerializer
     queryset = Survey.objects.all()
 
+class SurveyDetail(generics.RetrieveUpdateAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = SurveySerializer
+
+    def get_queryset(self):
+        return Survey.objects.filter(id = self.kwargs.get('pk', ''))
+
 '''END SURVEY API'''
 
 '''MAJOR API'''
