@@ -45,3 +45,24 @@ export const getSurvey = (id) => {
         })
     }
 }
+
+export const logSurvey = (survey) => {
+    const config = {
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    };
+    return dispatch => {
+        axios.post('/api/survey/log', survey, config)
+        .then(res =>{
+//            dispatch({
+//                type: GET_SURVEY,
+//                payload: res.data
+//            });
+        })
+        .catch(err => {
+            console.log('log survey error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}

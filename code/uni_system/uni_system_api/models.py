@@ -111,7 +111,7 @@ class Answer(models.Model):
     title    = models.CharField(max_length=255)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answer')
 
-class QuestionResolveLog(models.Model):
+class SurveyResolveLog(models.Model):
     user     = models.ForeignKey(UniUser, on_delete=models.CASCADE, related_name='survey_log')
     survey   = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='log')
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='question_log')

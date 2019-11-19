@@ -177,7 +177,7 @@ export class SurveyForm extends Component {
             )
         })
 
-        return questions
+//        return questions
     }
 
   render() {

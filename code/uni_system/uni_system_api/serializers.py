@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .utils import gen_student_num, WEEKDAYS
 from .models import UniUser, StudentProfile, Role, TeacherProfile, Grade, Group, Discipline, DisciplineSchedule, Major, \
-    Survey, Question, Answer
+    Survey, Question, Answer, SurveyResolveLog
 
 '''MAJOR SERIALIZERS'''
 class MajorSerializer(serializers.ModelSerializer):
@@ -244,5 +244,10 @@ class SurveySerializer(serializers.ModelSerializer):
                 a_obj.save()
 
         return s_obj
+
+class SurveyResolveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SurveyResolveLog
+        fields = ('id', 'user', 'survey', 'question', 'answer')
 
 '''END SURVEY SERIALIZERS'''

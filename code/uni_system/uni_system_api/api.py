@@ -1,10 +1,12 @@
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
-from .models import StudentProfile, UniUser, Role, Grade, Group, Discipline, DisciplineSchedule, Survey, Major
-from rest_framework import generics, permissions
+from .models import StudentProfile, UniUser, Role, Grade, Group, Discipline, DisciplineSchedule, Survey, Major, \
+    SurveyResolveLog
+from rest_framework import generics, permissions, status
 from .serializers import StudentProfileSerializer, UniUserSerializerST, UniUserSerializerStGET, \
     TeacherProfileSerializer, UniUserSerializerTE, GradesSerializer, StudentGradeSerializer, GroupSerializer, \
-    DisciplineSerializer, DisciplineScheduleSerializer, GradesSerializerPost, SurveySerializer, MajorSerializer
+    DisciplineSerializer, DisciplineScheduleSerializer, GradesSerializerPost, SurveySerializer, MajorSerializer, \
+    SurveyResolveSerializer
 from rest_auth.views import LoginView
 
 
@@ -193,6 +195,20 @@ class SurveyDetail(generics.RetrieveUpdateAPIView):
 
     def get_queryset(self):
         return Survey.objects.filter(id = self.kwargs.get('pk', ''))
+
+class SurveyResolve(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = SurveyResolveSerializer
+    queryset = SurveyResolveLog.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        serializer = SurveyResolveSerializer(data=request.data, many=isinstance(request.data, list))
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 '''END SURVEY API'''
 
