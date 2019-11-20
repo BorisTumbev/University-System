@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate
+from django.http import JsonResponse
 from rest_framework.response import Response
 from .models import StudentProfile, UniUser, Role, Grade, Group, Discipline, DisciplineSchedule, Survey, Major, \
     SurveyResolveLog
@@ -194,7 +195,14 @@ class SurveyDetail(generics.RetrieveUpdateAPIView):
     serializer_class = SurveySerializer
 
     def get_queryset(self):
-        return Survey.objects.filter(id = self.kwargs.get('pk', ''))
+        survey_id = self.kwargs.get('pk', '')
+        log = SurveyResolveLog.objects.filter(user = self.request.user, survey__id = survey_id)
+        q = Survey.objects.none()
+
+        if not log:
+            q = Survey.objects.filter(id = survey_id, major = self.request.user.student_profile.group.major)
+
+        return q
 
 class SurveyResolve(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated, ]

@@ -93,24 +93,32 @@ export class SurveyResolveForm extends Component {
         }
     }
 
-  render() {
+    render() {
         if (!this.props.isAuthenticated) {
             return <Redirect to="/login" />;
         }
 
+        const title = this.props.survey.title;
 
-
+        console.log('title');
+        console.log(title);
     return (
         <>
-            <h1>{this.props.survey.title}</h1>
-            <Form onSubmit={this.handleSubmit}>
-                {this.renderQuestions()}
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                </Form.Item>
-            </Form>
+        {title ? (
+        <>
+              <h1>{title}</h1>
+                <Form onSubmit={this.handleSubmit}>
+                    {this.renderQuestions()}
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit">
+                            Submit
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </>
+        ) : (
+            <b>forbidden</b>
+        )}
         </>
     );
   }
