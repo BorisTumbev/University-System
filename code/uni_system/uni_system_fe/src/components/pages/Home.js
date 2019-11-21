@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { authLogin } from "../../actions/auth";
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import UniScheduler from '../blocks/home/Scheduler'
+import ExamChart from '../blocks/home/ExamChart'
 
 export class Home extends Component {
 
@@ -13,7 +14,10 @@ export class Home extends Component {
             return <Redirect to="/login" />;
         }
         return (
+        <>
             <UniScheduler />
+            <ExamChart />
+        </>
         );
 
     }

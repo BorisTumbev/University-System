@@ -1,5 +1,5 @@
 import {
-GET_SURVEY
+GET_SURVEY, GET_SURVEY_LOG
 } from "./types";
 import axios from 'axios';
 
@@ -62,6 +62,27 @@ export const logSurvey = (survey) => {
         })
         .catch(err => {
             console.log('log survey error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}
+
+export const getSurveyLog = (id) => {
+    const config = {
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    };
+    return dispatch => {
+        axios.get(`/api/survey/log/${id}`, config)
+        .then(res =>{
+            dispatch({
+                type: GET_SURVEY_LOG,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            console.log('get survey log error-> ' + err)
 //            dispatch(authFail(err))
         })
     }

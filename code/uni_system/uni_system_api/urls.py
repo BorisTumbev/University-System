@@ -2,7 +2,7 @@ from . import views
 from django.urls import path
 from .api import StudentList, TeacherList, StudentDetail, TeacherDetail, GradesList, StudentGradesDetail, GroupList, \
     UniLoginView, UniUserView, DisciplineScheduleList, DisciplineList, SurveyList, MajorList, SurveyDetail, \
-    SurveyResolve
+    SurveyResolve, SurveyResolveDetail
 
 urlpatterns = [
     #STUDENTS URLS
@@ -32,6 +32,7 @@ urlpatterns = [
     path('api/survey', SurveyList.as_view()),
     path('api/survey/<int:pk>', SurveyDetail.as_view()),
     path('api/survey/log', SurveyResolve.as_view()),
+    path('api/survey/log/<int:pk>', SurveyResolveDetail.as_view()),
 
     #MAJOR URSL
     path('api/majors', MajorList.as_view()),

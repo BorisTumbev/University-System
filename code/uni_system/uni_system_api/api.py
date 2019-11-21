@@ -1,5 +1,8 @@
+import json
+
 from django.contrib.auth import authenticate
-from django.http import JsonResponse
+from django.db.models import Count
+from django.http import JsonResponse, HttpResponse
 from rest_framework.response import Response
 from .models import StudentProfile, UniUser, Role, Grade, Group, Discipline, DisciplineSchedule, Survey, Major, \
     SurveyResolveLog
@@ -8,7 +11,7 @@ from .serializers import StudentProfileSerializer, UniUserSerializerST, UniUserS
     TeacherProfileSerializer, UniUserSerializerTE, GradesSerializer, StudentGradeSerializer, GroupSerializer, \
     DisciplineSerializer, DisciplineScheduleSerializer, GradesSerializerPost, SurveySerializer, MajorSerializer, \
     SurveyResolveSerializer
-from rest_auth.views import LoginView
+from rest_auth.views import LoginView, APIView
 
 
 '''STUDENTS API'''
@@ -216,6 +219,15 @@ class SurveyResolve(generics.ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class SurveyResolveDetail(APIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+
+    def get(self, request, pk):
+        q = list(SurveyResolveLog.objects.filter(survey__id=pk).values('answer__title')
+                 .annotate(answ_count=Count('answer')))
+
+        return JsonResponse(q, safe=False)
 
 
 '''END SURVEY API'''
