@@ -1,5 +1,5 @@
 import {
-ADD_TEACHER
+ADD_TEACHER, GET_TEACHERS
 } from "./types";
 import axios from 'axios';
 
@@ -21,5 +21,37 @@ export const addTeacher = (teacher) => {
     }
 }
 
+export const getTeachers = () => {
 
+    return dispatch => {
+        axios.get('/api/teachers')
+        .then(res =>{
+            dispatch({
+                type: GET_TEACHERS,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            console.log('get teachers error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}
+
+export const editTeacher = (teacher) => {
+
+    return dispatch => {
+        axios.put(`/api/teachers/${teacher.id}`, teacher)
+        .then(res =>{
+//            dispatch({
+//                type: EDIT_STUDENT_PUT,
+//                payload: res.data
+//            });
+        })
+        .catch(err => {
+            console.log('edit teacher error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}
 

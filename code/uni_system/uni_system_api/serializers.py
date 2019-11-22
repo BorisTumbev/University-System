@@ -97,9 +97,15 @@ class UniUserSerializerStGET(serializers.ModelSerializer):
 
 '''TEACHER SERIALIZERS'''
 class TeacherProfileSerializer(serializers.ModelSerializer):
+    # groups = GroupSerializer(many=True)
     class Meta:
         model = TeacherProfile
         fields = ('id', 'faculty', 'groups')
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     print(self.context)
+
 
 class UniUserSerializerTE(serializers.ModelSerializer):
     teacher_profile = TeacherProfileSerializer()
@@ -107,6 +113,14 @@ class UniUserSerializerTE(serializers.ModelSerializer):
     class Meta:
         model = UniUser
         fields = ('id', 'teacher_profile', 'password', 'is_superuser', 'username', 'first_name', 'last_name', 'surname', 'email')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # self.fields['teacher_profile'].context.update(self.context)
+        # print(self.fields['teacher_profile'].context)
+        if self.context['request'].method == "PUT" or self.context['request'].method == "GET":
+            self.fields.pop('password')
+
 
     def create(self, validated_data):
         teacher_data = validated_data.pop('teacher_profile')
@@ -131,8 +145,13 @@ class UniUserSerializerTE(serializers.ModelSerializer):
         te_obj = instance.teacher_profile
 
         teacher_data = validated_data.pop('teacher_profile')
-        password = validated_data.pop('password')
         groups = teacher_data.pop('groups')
+
+        if 'password' in validated_data:
+            password = validated_data.pop('password')
+            user_obj.set_password(password)
+            user_obj.save()
+
         user_data = validated_data
 
         for g in groups:
@@ -140,8 +159,6 @@ class UniUserSerializerTE(serializers.ModelSerializer):
 
         TeacherProfile.objects.filter(id=te_obj.id).update(**teacher_data)
 
-        user_obj.set_password(password)
-        user_obj.save()
         UniUser.objects.filter(id=user_obj.id).update(**user_data)
 
         return user_obj

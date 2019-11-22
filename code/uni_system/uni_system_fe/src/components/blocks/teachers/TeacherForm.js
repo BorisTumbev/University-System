@@ -17,7 +17,8 @@ import {
   Button,
   AutoComplete,
   InputNumber,
-  Switch
+  Switch,
+  Modal
 } from 'antd';
 
 const { Option } = Select;
@@ -80,7 +81,7 @@ export class TeacherForm extends Component {
 
     render() {
 
-
+        const { visible, is_edit, onCancel, onOk, form } = this.props;
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
               labelCol: {
@@ -105,113 +106,122 @@ export class TeacherForm extends Component {
               },
             };
         return (
-            <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-                <Form.Item label="E-mail">
-                  {getFieldDecorator('email', {
-                    rules: [
-                      {
-                        type: 'email',
-                        message: 'The input is not valid E-mail!',
-                      },
-                      {
-                        required: true,
-                        message: 'Please input your E-mail!',
-                      },
-                    ],
-                  })(<Input />)}
-                </Form.Item>
-                <Form.Item label="Username">
-                  {getFieldDecorator('username', {
-                    rules: [{ required: true,
-                              message: 'Please input your username!'
-                    }],
-                  })(
-                    <Input/>,
-                  )}
-                </Form.Item>
-                <Form.Item label="First Name">
-                  {getFieldDecorator('first_name', {
-                    rules: [{ required: true,
-                              message: 'Please input your first name!'
-                    }],
-                  })(
-                    <Input/>,
-                  )}
-                </Form.Item>
-                <Form.Item label="Surname">
-                  {getFieldDecorator('surname', {
-                    rules: [{ required: true,
-                              message: 'Please input your surname!'
-                    }],
-                  })(
-                    <Input/>,
-                  )}
-                </Form.Item>
-                <Form.Item label="Last Name">
-                  {getFieldDecorator('last_name', {
-                    rules: [{ required: true,
-                              message: 'Please input your last name!'
-                    }],
-                  })(
-                    <Input/>,
-                  )}
-                </Form.Item>
-                <Form.Item label="Groups">
-                  {getFieldDecorator('groups', {
-                    rules: [
-                      { required: true, message: 'Please select groups!', type: 'array' },
-                    ],
-                  })(
-                    <Select mode="multiple" placeholder="Please select groups">
-                        {this.groupsOptions()}
-                    </Select>,
-                  )}
-                </Form.Item>
-                <Form.Item label="Faculty" hasFeedback>
-                  {getFieldDecorator('faculty', {
-                    rules: [{ required: true, message: 'Please select faculty!' }],
-                  })(
-                    <Select placeholder="Please select a faculty">
-                      <Option value="FEA">FEA</Option>
-                      <Option value="FMU">FMU</Option>
-                    </Select>,
-                  )}
-                </Form.Item>
-                <Form.Item label="Password" hasFeedback>
-                  {getFieldDecorator('password', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please input your password!',
-                      },
-                      {
-                        validator: this.validateToNextPassword,
-                      },
-                    ],
-                  })(<Input.Password />)}
-                </Form.Item>
-                <Form.Item label="Confirm Password" hasFeedback>
-                  {getFieldDecorator('confirm', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please confirm your password!',
-                      },
-                      {
-                        validator: this.compareToFirstPassword,
-                      },
-                    ],
-                  })(<Input.Password onBlur={this.handleConfirmBlur} />)}
-                </Form.Item>
-                <Form.Item label="Admin">
-                  {getFieldDecorator('is_superuser', { valuePropName: 'checked',  initialValue: false, })(<Switch />)}
-                </Form.Item>
-                <Form.Item {...tailFormItemLayout}>
-                  <Button type="primary" htmlType="submit">
-                    Add Student
-                  </Button>
-                </Form.Item>
-            </Form>
+
+            <Modal
+              title="Student Form"
+              visible={visible}
+              onOk={onOk}
+              onCancel={onCancel}
+              okText="Submit"
+              width= '60%'
+            >
+                <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+                    <Form.Item label="E-mail">
+                      {getFieldDecorator('email', {
+                        rules: [
+                          {
+                            type: 'email',
+                            message: 'The input is not valid E-mail!',
+                          },
+                          {
+                            required: true,
+                            message: 'Please input your E-mail!',
+                          },
+                        ],
+                      })(<Input />)}
+                    </Form.Item>
+                    <Form.Item label="Username">
+                      {getFieldDecorator('username', {
+                        rules: [{ required: true,
+                                  message: 'Please input your username!'
+                        }],
+                      })(
+                        <Input/>,
+                      )}
+                    </Form.Item>
+                    <Form.Item label="First Name">
+                      {getFieldDecorator('first_name', {
+                        rules: [{ required: true,
+                                  message: 'Please input your first name!'
+                        }],
+                      })(
+                        <Input/>,
+                      )}
+                    </Form.Item>
+                    <Form.Item label="Surname">
+                      {getFieldDecorator('surname', {
+                        rules: [{ required: true,
+                                  message: 'Please input your surname!'
+                        }],
+                      })(
+                        <Input/>,
+                      )}
+                    </Form.Item>
+                    <Form.Item label="Last Name">
+                      {getFieldDecorator('last_name', {
+                        rules: [{ required: true,
+                                  message: 'Please input your last name!'
+                        }],
+                      })(
+                        <Input/>,
+                      )}
+                    </Form.Item>
+                    <Form.Item label="Groups">
+                      {getFieldDecorator('groups', {
+                        rules: [
+                          { required: true, message: 'Please select groups!', type: 'array' },
+                        ],
+                      })(
+                        <Select mode="multiple" placeholder="Please select groups">
+                            {this.groupsOptions()}
+                        </Select>,
+                      )}
+                    </Form.Item>
+                    <Form.Item label="Faculty" hasFeedback>
+                      {getFieldDecorator('faculty', {
+                        rules: [{ required: true, message: 'Please select faculty!' }],
+                      })(
+                        <Select placeholder="Please select a faculty">
+                          <Option value="FEA">FEA</Option>
+                          <Option value="FMU">FMU</Option>
+                        </Select>,
+                      )}
+                    </Form.Item>
+                    {!is_edit &&
+                        <>
+                        <Form.Item label="Password" hasFeedback>
+                          {getFieldDecorator('password', {
+                            rules: [
+                              {
+                                required: true,
+                                message: 'Please input your password!',
+                              },
+                              {
+                                validator: this.validateToNextPassword,
+                              },
+                            ],
+                          })(<Input.Password />)}
+                        </Form.Item>
+                        <Form.Item label="Confirm Password" hasFeedback>
+                          {getFieldDecorator('confirm', {
+                            rules: [
+                              {
+                                required: true,
+                                message: 'Please confirm your password!',
+                              },
+                              {
+                                validator: this.compareToFirstPassword,
+                              },
+                            ],
+                          })(<Input.Password onBlur={this.handleConfirmBlur} />)}
+                        </Form.Item>
+                        </>
+                    }
+                    <Form.Item label="Admin">
+                      {getFieldDecorator('is_superuser', { valuePropName: 'checked',  initialValue: false, })(<Switch />)}
+                    </Form.Item>
+                </Form>
+            </Modal>
         );
 
     }

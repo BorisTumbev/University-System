@@ -58,7 +58,6 @@ export const changeIsEditFalse = () => {
 
 export const editStudentPut = (student) => {
 
-    console.log(student)
     return dispatch => {
         axios.put(`/api/students/${student.id}`, student)
         .then(res =>{

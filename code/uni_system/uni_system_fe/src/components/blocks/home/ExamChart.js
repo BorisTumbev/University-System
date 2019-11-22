@@ -46,7 +46,7 @@ export class ExamChart extends Component {
     renderPies(data){
         return Object.keys(data).map(function (e, index){
             return (
-                <div>
+                <div key={index}>
                 <h1>{e}</h1>
                 <PieChart width={400} height={400}>
                     <Pie
