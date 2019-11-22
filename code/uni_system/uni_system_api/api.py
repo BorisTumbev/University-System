@@ -1,5 +1,5 @@
 import json
-
+from collections import defaultdict
 from django.contrib.auth import authenticate
 from django.db.models import Count
 from django.http import JsonResponse, HttpResponse
@@ -224,10 +224,15 @@ class SurveyResolveDetail(APIView):
     permission_classes = [permissions.IsAuthenticated, ]
 
     def get(self, request, pk):
-        q = list(SurveyResolveLog.objects.filter(survey__id=pk).values('answer__title')
-                 .annotate(answ_count=Count('answer')))
+        q_set = list(SurveyResolveLog.objects.filter(survey__id=pk).values('answer__title', 'question__title')
+                 .annotate(answ_count=Count('answer')).order_by('question'))
 
-        return JsonResponse(q, safe=False)
+        question_dict = defaultdict(list)
+
+        for q in q_set:
+            question_dict[q['question__title']].append(q)
+
+        return JsonResponse(dict(question_dict), safe=False)
 
 
 '''END SURVEY API'''

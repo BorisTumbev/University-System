@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#ff4242', '#ff4242', '#000000', '#00996e'];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -39,43 +39,45 @@ export class ExamChart extends Component {
         }
     }
 
-
     componentDidMount(){
-        console.log('vlenaaa');
         this.props.getSurveyLog(4);
     };
 
-
+    renderPies(data){
+        return Object.keys(data).map(function (e, index){
+            return (
+                <div>
+                <h1>{e}</h1>
+                <PieChart width={400} height={400}>
+                    <Pie
+                      data={data[e]}
+                      cx={200}
+                      cy={200}
+                      labelLine={false}
+                      label={renderCustomizedLabel}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="answ_count"
+                      nameKey='answer__title'
+                    >
+                      {
+                        data[e].map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+                      }
+                    </Pie>
+                    <Tooltip/>
+                    <Legend/>
+                </PieChart>
+                </div>
+            )
+        });
+    };
 
     render() {
-
-        console.log('this.props.survey_log');
-        console.log(this.props.survey_log);
-
         return (
-        <>
-        <PieChart width={400} height={400}>
-            <Pie
-              data={this.props.survey_log}
-              cx={200}
-              cy={200}
-              labelLine={false}
-              label={renderCustomizedLabel}
-              outerRadius={80}
-              fill="#8884d8"
-              dataKey="answ_count"
-              nameKey='answer__title'
-            >
-              {
-                this.props.survey_log.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
-              }
-            </Pie>
-        <Tooltip/>
-        <Legend/>
-        </PieChart>
-        </>
+            <div style={{display:"flex"}}>
+                {this.renderPies(this.props.survey_log)}
+            </div>
         );
-
     }
 }
 
@@ -86,7 +88,6 @@ const mapStateToProps = state => ({
 function mapDispatchToProps(dispatch) {
     return {
         getSurveyLog: (id) => dispatch(getSurveyLog(id)),
-//        addStudent: (student) => dispatch(addStudent(student)),
   };
 }
 //const GrForm = Form.create()(GradeForm);

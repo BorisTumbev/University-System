@@ -224,6 +224,7 @@ class QuestionSerializier(serializers.ModelSerializer):
 
 class SurveySerializer(serializers.ModelSerializer):
     questions = QuestionSerializier(source='question', many=True)
+    major = MajorSerializer()
 
     class Meta:
         model = Survey

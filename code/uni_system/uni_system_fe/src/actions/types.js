@@ -22,4 +22,6 @@ export const ADD_GRADE = 'ADD_GRADE';
 export const GET_MAJORS = 'GET_MAJORS';
 
 export const GET_SURVEY = 'GET_SURVEY';
+export const GET_SURVEYS = 'GET_SURVEYS';
 export const GET_SURVEY_LOG = 'GET_SURVEY_LOG';
+export const SHOW_ON_HOME = 'SHOW_ON_HOME';

@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { authLogin } from "../../actions/auth";
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import SurveyForm from '../blocks/survey/SurveyForm';
+import SurveyTable from '../blocks/survey/SurveyTable';
 
 
 export class Survey extends Component {
@@ -13,6 +14,7 @@ export class Survey extends Component {
 
         return (
         <>
+            <SurveyTable />
             <SurveyForm />
         </>
         );

@@ -1,5 +1,5 @@
 import {
-GET_SURVEY, GET_SURVEY_LOG
+GET_SURVEY, GET_SURVEY_LOG, GET_SURVEYS, SHOW_ON_HOME
 } from "./types";
 import axios from 'axios';
 
@@ -85,5 +85,35 @@ export const getSurveyLog = (id) => {
             console.log('get survey log error-> ' + err)
 //            dispatch(authFail(err))
         })
+    }
+}
+
+export const getSurveys = () => {
+    const config = {
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    };
+    return dispatch => {
+        axios.get('/api/survey', config)
+        .then(res =>{
+            dispatch({
+                type: GET_SURVEYS,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            console.log('get surveys error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}
+
+export const showOnHome = (survey) => {
+    return dispatch => {
+        dispatch({
+            type: SHOW_ON_HOME,
+            payload: survey
+        });
     }
 }

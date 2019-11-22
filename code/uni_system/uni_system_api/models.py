@@ -1,5 +1,5 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db import models
+from django.db import models, transaction
 from django.contrib.auth.models import AbstractUser
 from .utils import FACULTY_CHOICES, gen_student_num
 
@@ -99,8 +99,20 @@ class Survey(models.Model):
     title   = models.CharField(max_length=255)
     major   = models.ForeignKey(Major, on_delete=models.CASCADE, related_name='survey')
 
+    is_active = models.BooleanField(default=False)
+    is_on_home = models.BooleanField(default=False)
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.is_on_home:
+            return super().save(*args, **kwargs)
+        with transaction.atomic():
+            Survey.objects.filter(
+                is_on_home=True).update(is_on_home=False)
+            return super().save(*args, **kwargs)
+
 
 class Question(models.Model):
     title    = models.CharField(max_length=255)
