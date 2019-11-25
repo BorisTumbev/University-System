@@ -33,7 +33,7 @@ export class TeacherDetails extends Component {
         const user = this.props
         return (
         <>
-            <Descriptions column={5} title="Student Info" layout="vertical" bordered>
+            <Descriptions column={5} title="Teacher Info" layout="vertical" bordered>
                 <Descriptions.Item label="First Name">{user.first_name}</Descriptions.Item>
                 <Descriptions.Item label="Surname">{user.surname}</Descriptions.Item>
                 <Descriptions.Item label="Last Name">{user.last_name}</Descriptions.Item>

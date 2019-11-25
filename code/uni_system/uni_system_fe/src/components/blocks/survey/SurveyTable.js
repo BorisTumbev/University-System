@@ -55,6 +55,15 @@ export class SurveyTable extends Component {
                 )
             },
             {
+                title: "Activate",
+                key: "activate",
+                render: (text, record) => (
+                    <Button type="primary" onClick={(e) => {this.activate(record)}}>
+                        Activate
+                    </Button>
+                )
+            },
+            {
                 title: "Edit",
                 key: "edit",
                 render: (text, record) => (
@@ -86,6 +95,11 @@ export class SurveyTable extends Component {
 
     edit(record){
         console.log('edit');
+        console.log(record);
+    }
+
+    activate(record){
+        console.log('activate');
         console.log(record);
     }
 

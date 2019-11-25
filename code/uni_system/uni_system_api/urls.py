@@ -18,6 +18,7 @@ urlpatterns = [
     path('api/students/grades/<int:pk>', StudentGradesDetail.as_view()),
 
     #GROUP URLS
+    path('api/groups/<int:pk>', GroupList.as_view()),
     path('api/groups', GroupList.as_view()),
 
     #AUTH URLS
@@ -25,6 +26,7 @@ urlpatterns = [
     path('api/user', UniUserView.as_view()),
 
     #DISCIPLINE URLS
+    path('api/discipline_schedule/<int:major_pk>', DisciplineScheduleList.as_view()),
     path('api/discipline_schedule', DisciplineScheduleList.as_view()),
     path('api/discipline', DisciplineList.as_view()),
 
@@ -34,7 +36,7 @@ urlpatterns = [
     path('api/survey/log', SurveyResolve.as_view()),
     path('api/survey/log/<int:pk>', SurveyResolveDetail.as_view()),
 
-    #MAJOR URSL
+    #MAJOR URLS
     path('api/majors', MajorList.as_view()),
 
 ]

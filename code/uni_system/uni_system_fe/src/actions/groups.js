@@ -4,14 +4,22 @@ GET_GROUPS
 import axios from 'axios';
 
 
-export const getGroups = () => {
+export const getGroups = (id = 0) => {
     const config = {
         headers: {
             "Authorization": "Token " + localStorage.getItem('token')
         }
     };
+    let url;
+    if(id === 0){
+        url = '/api/groups';
+    }
+    else{
+        url = `/api/groups/${id}`;
+    }
+
     return dispatch => {
-        axios.get('/api/groups', config)
+        axios.get(url, config)
         .then(res =>{
             dispatch({
                 type: GET_GROUPS,

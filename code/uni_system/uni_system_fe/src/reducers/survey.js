@@ -6,7 +6,7 @@ import {updateObject} from "../utils";
 
 const initialState = {
     survey: {},
-    survey_log: [],
+    survey_log: {},
     surveys: [],
     survey_on_home: undefined
 }

@@ -25,14 +25,22 @@ export const getDisciplines = () => {
     }
 }
 
-export const getDiscSchedule = () => {
+export const getDiscSchedule = (major_id = 0) => {
+    let url;
     const config = {
         headers: {
             "Authorization": "Token " + localStorage.getItem('token')
         }
     };
+    if(major_id === 0){
+        url = '/api/discipline_schedule';
+    }
+    else{
+        url = `/api/discipline_schedule/${major_id}`;
+    }
+
     return dispatch => {
-        axios.get('/api/discipline_schedule', config)
+        axios.get(url, config)
         .then(res =>{
             dispatch({
                 type: GET_DISCIPLINE_SCHEDULE,

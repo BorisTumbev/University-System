@@ -123,13 +123,11 @@ class GroupList(generics.ListCreateAPIView):
     # queryset = Group.objects.all()
 
     def get_queryset(self):
+        major_obj = Major.objects.first()
+        major_id = self.kwargs.get('pk', major_obj.id)
 
-        if hasattr(self.request.user, 'student_profile'):
-            major = self.request.user.student_profile.group.major
-        elif hasattr(self.request.user, 'teacher_profile'):
-            major = self.request.user.teacher_profile.group.major
+        return Group.objects.filter(major=major_id).order_by('name')
 
-        return Group.objects.filter(major=major).order_by('name')
 '''END GROUPS API'''
 
 
@@ -172,12 +170,10 @@ class DisciplineScheduleList(generics.ListCreateAPIView):
     serializer_class = DisciplineScheduleSerializer
 
     def get_queryset(self):
-        if hasattr(self.request.user, 'student_profile'):
-            user_major = self.request.user.student_profile.group.major
-        elif hasattr(self.request.user, 'teacher_profile'):
-            user_major = self.request.user.teacher_profile.group.major
+        major_obj = Major.objects.first()
+        major_id = self.kwargs.get('major_pk', major_obj.id)
 
-        return DisciplineSchedule.objects.filter(group__major=user_major)
+        return DisciplineSchedule.objects.filter(group__major=major_id)
 
 class DisciplineList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
@@ -224,7 +220,7 @@ class SurveyResolveDetail(APIView):
     permission_classes = [permissions.IsAuthenticated, ]
 
     def get(self, request, pk):
-        q_set = list(SurveyResolveLog.objects.filter(survey__id=pk).values('answer__title', 'question__title')
+        q_set = list(SurveyResolveLog.objects.filter(survey__id=pk).values('answer__title', 'question__title', 'survey__title')
                  .annotate(answ_count=Count('answer')).order_by('question'))
 
         question_dict = defaultdict(list)

@@ -8,6 +8,10 @@ import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { getGroups } from "../../../actions/groups";
 import { getDiscSchedule } from "../../../actions/discipline";
+import { getMajors } from "../../../actions/major";
+import { Select } from 'antd';
+
+const { Option } = Select;
 
 
 class UniScheduler extends Component{
@@ -26,7 +30,40 @@ class UniScheduler extends Component{
     componentDidMount(){
         this.props.getGroups();
         this.props.getDiscSchedule();
+        this.props.getMajors();
     }
+
+    onMajorChange(value){
+        this.props.getDiscSchedule(value);
+        this.props.getGroups(value);
+    }
+
+
+    renderMajorSelect(){
+        let majors = [];
+        this.props.majors.map(function(m, index){
+            majors.push(<Option key={m.id} value={m.id}>{m.name}</Option>)
+        });
+        return(
+            <Select
+                showSearch
+                style={{ width: 200 }}
+                placeholder="Select a major"
+                optionFilterProp="children"
+                onChange={this.onMajorChange.bind(this)}
+                defaultValue={1}
+                //        onFocus={onFocus}
+                //        onBlur={onBlur}
+                //        onSearch={onSearch}
+                filterOption={(input, option) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+            >
+                {majors}
+            </Select>
+        )
+    }
+
 
     render(){
 
@@ -63,6 +100,7 @@ class UniScheduler extends Component{
                                onScrollTop={this.onScrollTop}
                                onScrollBottom={this.onScrollBottom}
                                toggleExpandFunc={this.toggleExpandFunc}
+                               leftCustomHeader={this.renderMajorSelect()}
                     />
                 </div>
             </div>
@@ -209,12 +247,14 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.token != null,
     groups: state.groups.groups,
     discipline_schedule: state.discipline_schedule.discipline_schedule,
+    majors: state.major.majors,
 });
 
 function mapDispatchToProps(dispatch) {
     return {
-        getGroups: () => dispatch(getGroups()),
-        getDiscSchedule: () => dispatch(getDiscSchedule()),
+        getGroups: (id) => dispatch(getGroups(id)),
+        getDiscSchedule: (major_id) => dispatch(getDiscSchedule(major_id)),
+        getMajors: () => dispatch(getMajors()),
   };
 }
 UniScheduler = DragDropContext(HTML5Backend)(UniScheduler);

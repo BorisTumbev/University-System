@@ -73,10 +73,19 @@ export class ExamChart extends Component {
     };
 
     render() {
+        let title;
+
+        if(Object.keys(this.props.survey_log).length > 0){
+            title = this.props.survey_log[Object.keys(this.props.survey_log)[0]][0].survey__title
+        }
+
         return (
-            <div style={{display:"flex"}}>
-                {this.renderPies(this.props.survey_log)}
-            </div>
+            <>
+                <h1>{title}</h1>
+                <div style={{display:"flex"}}>
+                    {this.renderPies(this.props.survey_log)}
+                </div>
+            </>
         );
     }
 }
