@@ -25,7 +25,7 @@ export class StudentDetails extends Component {
 
     grades(){
         return this.props.grades.map(function (e, index){
-            return <div key={e.id}> {e.discipline.name} : {e.grade} - {e.created} <br /> </div>
+            return <div key={e.id}> &#183; {e.discipline.name} : {e.grade} - {e.created} </div>
         })
     }
 

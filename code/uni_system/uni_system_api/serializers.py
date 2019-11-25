@@ -102,22 +102,21 @@ class TeacherProfileSerializer(serializers.ModelSerializer):
         model = TeacherProfile
         fields = ('id', 'faculty', 'groups')
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     print(self.context)
-
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.context['request'].method == "GET":
+            self.fields['groups'] = GroupSerializer(many=True)
 
 class UniUserSerializerTE(serializers.ModelSerializer):
-    teacher_profile = TeacherProfileSerializer()
-
+    # teacher_profile = TeacherProfileSerializer()
     class Meta:
         model = UniUser
-        fields = ('id', 'teacher_profile', 'password', 'is_superuser', 'username', 'first_name', 'last_name', 'surname', 'email')
+        fields = ('id', 'teacher_profile', 'password', 'is_superuser', 'username', 'first_name', 'last_name', 'surname',
+                  'email', 'is_active')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # self.fields['teacher_profile'].context.update(self.context)
-        # print(self.fields['teacher_profile'].context)
+        self.fields['teacher_profile'] = TeacherProfileSerializer(context=self.context)
         if self.context['request'].method == "PUT" or self.context['request'].method == "GET":
             self.fields.pop('password')
 

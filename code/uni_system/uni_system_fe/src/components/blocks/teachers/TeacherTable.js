@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getTeachers, editTeacher } from "../../../actions/teachers";
 import TeacherForm from './TeacherForm'
+import TeacherDetails from './TeacherDetails'
 import {
   Form,
   Input,
@@ -109,7 +110,7 @@ export class TeacherTable extends Component {
         width: '60%',
         title: '',
         content: (
-            <StudentDetails {...user}/>
+            <TeacherDetails {...user}/>
         ),
         onOk() {},
         });
@@ -125,13 +126,17 @@ export class TeacherTable extends Component {
 
     edit(record){
         const { form } = this.formRef.props;
+        var groups_ids = [];
+        record.teacher_profile.groups.map(function(g, index){
+            groups_ids.push(g.id);
+        });
         form.setFieldsValue({
             email: record.email,
             username: record.username,
             first_name: record.first_name,
             surname: record.surname,
             last_name: record.last_name,
-            groups: record.teacher_profile.groups,
+            groups: groups_ids,
             faculty: record.teacher_profile.faculty,
             is_superuser: record.is_superuser,
         })
