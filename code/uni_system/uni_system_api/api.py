@@ -195,11 +195,21 @@ class SurveyDetail(generics.RetrieveUpdateAPIView):
 
     def get_queryset(self):
         survey_id = self.kwargs.get('pk', '')
+        q = Survey.objects.filter(id = survey_id, major = self.request.user.student_profile.group.major)
+
+        return q
+
+class SurveyToResolveDetail(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = SurveySerializer
+
+    def get_queryset(self):
+        survey_id = self.kwargs.get('pk', '')
         log = SurveyResolveLog.objects.filter(user = self.request.user, survey__id = survey_id)
         q = Survey.objects.none()
 
         if not log:
-            q = Survey.objects.filter(id = survey_id, major = self.request.user.student_profile.group.major)
+            q = Survey.objects.filter(id = survey_id, is_active=True, major = self.request.user.student_profile.group.major)
 
         return q
 
@@ -219,12 +229,15 @@ class SurveyResolve(generics.ListCreateAPIView):
 class SurveyResolveDetail(APIView):
     permission_classes = [permissions.IsAuthenticated, ]
 
-    def get(self, request, pk):
-        q_set = list(SurveyResolveLog.objects.filter(survey__id=pk).values('answer__title', 'question__title', 'survey__title')
-                 .annotate(answ_count=Count('answer')).order_by('question'))
+    def get(self, request, pk=None):
+        if pk:
+            q_set = list(SurveyResolveLog.objects.filter(survey__id=pk).values('answer__title', 'question__title', 'survey__title')
+                     .annotate(answ_count=Count('answer')).order_by('question'))
+        else:
+            q_set = list(SurveyResolveLog.objects.filter(survey__is_on_home=True).values('answer__title', 'question__title', 'survey__title')
+                     .annotate(answ_count=Count('answer')).order_by('question'))
 
         question_dict = defaultdict(list)
-
         for q in q_set:
             question_dict[q['question__title']].append(q)
 

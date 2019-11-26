@@ -40,7 +40,7 @@ export class ExamChart extends Component {
     }
 
     componentDidMount(){
-        this.props.getSurveyLog(4);
+        this.props.getSurveyLog();
     };
 
     renderPies(data){

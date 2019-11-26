@@ -32,7 +32,7 @@ export const getSurvey = (id) => {
         }
     };
     return dispatch => {
-        axios.get(`/api/survey/${id}`, config)
+        axios.get(`/api/survey/resolve/${id}`, config)
         .then(res =>{
             dispatch({
                 type: GET_SURVEY,
@@ -67,14 +67,22 @@ export const logSurvey = (survey) => {
     }
 }
 
-export const getSurveyLog = (id) => {
+export const getSurveyLog = (id = 0) => {
     const config = {
         headers: {
             "Authorization": "Token " + localStorage.getItem('token')
         }
     };
+    let url;
+    if(id === 0){
+        url = '/api/survey/log/details'
+    }
+    else{
+        url = `/api/survey/log/details/${id}`
+    }
+
     return dispatch => {
-        axios.get(`/api/survey/log/${id}`, config)
+        axios.get(url, config)
         .then(res =>{
             dispatch({
                 type: GET_SURVEY_LOG,
@@ -104,6 +112,29 @@ export const getSurveys = () => {
         })
         .catch(err => {
             console.log('get surveys error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}
+
+
+export const editSurvey = (survey) => {
+    const config = {
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    };
+    return dispatch => {
+        axios.put(`/api/survey/${survey.id}`, survey, config)
+        .then(res =>{
+            dispatch(getSurveys());
+//            dispatch({
+//                type: GET_SURVEYS,
+//                payload: res.data
+//            });
+        })
+        .catch(err => {
+            console.log('edit survey error-> ' + err)
 //            dispatch(authFail(err))
         })
     }

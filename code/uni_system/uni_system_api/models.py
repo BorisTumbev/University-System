@@ -105,14 +105,11 @@ class Survey(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
-        if not self.is_on_home:
-            return super().save(*args, **kwargs)
-        with transaction.atomic():
-            Survey.objects.filter(
-                is_on_home=True).update(is_on_home=False)
-            return super().save(*args, **kwargs)
-
+    def clean(self, *args, **kwargs):
+        if self.is_on_home:
+            with transaction.atomic():
+                Survey.objects.filter(
+                    is_on_home=True).exclude(id=self.id).update(is_on_home=False)
 
 class Question(models.Model):
     title    = models.CharField(max_length=255)

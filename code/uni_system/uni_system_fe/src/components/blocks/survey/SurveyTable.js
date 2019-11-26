@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getSurveys } from "../../../actions/survey";
+import { getSurveys, editSurvey } from "../../../actions/survey";
 import {
   Form,
   Input,
@@ -28,6 +28,41 @@ export class SurveyTable extends Component {
     constructor(props){
         super(props);
 
+        this.state = {
+//            table_columns: columns,
+            visible: false,
+            student: undefined,
+            showStudentFormEdit: false,
+        }
+    }
+
+
+    componentDidMount(record){
+        this.props.getSurveys();
+    };
+
+    showOnHome(record){
+        console.log('show on homeez');
+        console.log(record);
+        record.is_on_home = true;
+        this.props.editSurvey(record);
+    }
+
+    edit(record){
+        console.log('edit');
+        console.log(record);
+    }
+
+    activate(record){
+        console.log('activate');
+        console.log(record);
+        record.is_active = true;
+        this.props.editSurvey(record);
+    }
+
+    render() {
+        console.log('vlezna v renderzzz');
+        console.log(this.props.surveys);
         const columns = [
             {
                 title: '#',
@@ -49,7 +84,7 @@ export class SurveyTable extends Component {
                 title: "Show on home page",
                 key: "show",
                 render: (text, record) => (
-                    <Button type="primary" onClick={(e) => {this.showOnHome(record)}}>
+                    <Button className='surveyShow' type={record.is_on_home ? 'primary' : 'danger'} onClick={(e) => {this.showOnHome(record)}}>
                         Show
                     </Button>
                 )
@@ -58,7 +93,7 @@ export class SurveyTable extends Component {
                 title: "Activate",
                 key: "activate",
                 render: (text, record) => (
-                    <Button type="primary" onClick={(e) => {this.activate(record)}}>
+                    <Button type={record.is_active ? 'primary' : 'danger'} onClick={(e) => {this.activate(record)}}>
                         Activate
                     </Button>
                 )
@@ -67,48 +102,17 @@ export class SurveyTable extends Component {
                 title: "Edit",
                 key: "edit",
                 render: (text, record) => (
-                    <Button type="primary" onClick={(e) => {this.edit(record)}}>
+                    <Button disabled type="primary" onClick={(e) => {this.edit(record)}}>
                         Edit
                     </Button>
                 )
             }
         ];
 
-
-        this.state = {
-            table_columns: columns,
-            visible: false,
-            student: undefined,
-            showStudentFormEdit: false,
-        }
-    }
-
-
-    componentDidMount(record){
-        this.props.getSurveys();
-    };
-
-    showOnHome(record){
-        console.log('show on home');
-        console.log(record);
-    }
-
-    edit(record){
-        console.log('edit');
-        console.log(record);
-    }
-
-    activate(record){
-        console.log('activate');
-        console.log(record);
-    }
-
-    render() {
-
         return (
         <>
             <h1>SURVEYS</h1>
-            <Table columns={this.state.table_columns} dataSource={this.props.surveys} pagination={{ pageSize: 25 }}
+            <Table columns={columns} dataSource={this.props.surveys} pagination={{ pageSize: 25 }}
                     rowKey='id'/>
         </>
         );
@@ -124,7 +128,7 @@ function mapDispatchToProps(dispatch) {
     return {
         getSurveys: () => dispatch(getSurveys()),
 //        addGrade: (grade) => dispatch(addGrade(grade)),
-//        editStudent: (student) => dispatch(editStudent(student)),
+        editSurvey: (survey) => dispatch(editSurvey(survey)),
 //        editStudentPut: (student) => dispatch(editStudentPut(student)),
   };
 }

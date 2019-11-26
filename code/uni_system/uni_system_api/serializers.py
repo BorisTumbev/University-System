@@ -244,7 +244,24 @@ class SurveySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Survey
-        fields = ('id', 'title', 'major', 'questions')
+        fields = ('id', 'title', 'is_active', 'is_on_home', 'major', 'questions')
+
+    def update(self, instance, validated_data):
+        questions = validated_data.pop('question')
+        validated_data['major'] = instance.major.id
+
+        s_obj = Survey.objects.filter(id=instance.id)
+        s_obj.update(**validated_data)
+        s_obj[0].full_clean()
+        # q_objs = instance.question.all()
+        #
+        # for q_data, q in zip(questions, q_objs):
+        #     answers = q_data.pop('answer')
+        #     Question.objects.filter(id=q.id).update(**q_data)
+        #     for a_data, a in zip(answers, q.answer.all()):
+        #         Answer.objects.filter(id=a.id).update(**a_data)
+
+        return s_obj[0]
 
     def create(self, validated_data):
         questions = validated_data.pop('question')
