@@ -9,7 +9,9 @@ import HTML5Backend from "react-dnd-html5-backend";
 import { getGroups } from "../../../actions/groups";
 import { getDiscSchedule } from "../../../actions/discipline";
 import { getMajors } from "../../../actions/major";
+import { sendEmail } from "../../../actions/email";
 import { Select } from 'antd';
+import EmailForm from './EmailForm';
 
 const { Option } = Select;
 
@@ -24,6 +26,8 @@ class UniScheduler extends Component{
         this.state = {
             viewModel: schedulerData,
 //            resources: resources,
+            showEmailForm: false,
+            group_id: undefined
         }
     }
 
@@ -64,6 +68,28 @@ class UniScheduler extends Component{
         )
     }
 
+    saveFormRef = formRef => {
+        this.formRef = formRef;
+    };
+
+    handleOk(e) {
+        const { form } = this.formRef.props;
+        form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                this.props.sendEmail(this.state.group_id, values);
+                this.setState({
+                    showEmailForm: false,
+                });
+            }
+        });
+    };
+
+    handleCancel(e) {
+        this.setState({
+            showEmailForm: false,
+        });
+    };
+
 
     render(){
 
@@ -88,7 +114,7 @@ class UniScheduler extends Component{
                                onViewChange={this.onViewChange}
                                eventItemClick={this.eventClicked}
                                viewEventClick={this.ops1}
-                               viewEventText="Ops 1"
+                               viewEventText="send email to students"
                                viewEvent2Text="Ops 2"
                                viewEvent2Click={this.ops2}
                                updateEventStart={this.updateEventStart}
@@ -103,6 +129,12 @@ class UniScheduler extends Component{
                                leftCustomHeader={this.renderMajorSelect()}
                     />
                 </div>
+                <EmailForm
+                  wrappedComponentRef={this.saveFormRef}
+                  visible={this.state.showEmailForm}
+                  onOk={(e) => {this.handleOk(e)}}
+                  onCancel={(e) => {this.handleCancel(e)}}
+                />
             </div>
         )
     }
@@ -144,7 +176,11 @@ class UniScheduler extends Component{
     };
 
     ops1 = (schedulerData, event) => {
-        alert(`You just executed ops1 to event: {id: ${event.id}, title: ${event.title}}`);
+//        alert(`You just executed ops1 to event: {id: ${event.id}, title: ${event.title}}`);
+        this.setState({
+            showEmailForm: true,
+            group_id: event.resourceId
+        });
     };
 
     ops2 = (schedulerData, event) => {
@@ -255,6 +291,7 @@ function mapDispatchToProps(dispatch) {
         getGroups: (id) => dispatch(getGroups(id)),
         getDiscSchedule: (major_id) => dispatch(getDiscSchedule(major_id)),
         getMajors: () => dispatch(getMajors()),
+        sendEmail: (group_id, email) => dispatch(sendEmail(group_id, email)),
   };
 }
 UniScheduler = DragDropContext(HTML5Backend)(UniScheduler);

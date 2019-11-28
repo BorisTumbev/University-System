@@ -2,7 +2,7 @@ from . import views
 from django.urls import path
 from .api import StudentList, TeacherList, StudentDetail, TeacherDetail, GradesList, StudentGradesDetail, GroupList, \
     UniLoginView, UniUserView, DisciplineScheduleList, DisciplineList, SurveyList, MajorList, SurveyDetail, \
-    SurveyResolve, SurveyResolveDetail, SurveyToResolveDetail
+    SurveyResolve, SurveyResolveDetail, SurveyToResolveDetail, sendEmailToGroup
 
 urlpatterns = [
     #STUDENTS URLS
@@ -40,5 +40,8 @@ urlpatterns = [
 
     #MAJOR URLS
     path('api/majors', MajorList.as_view()),
+
+    #EMAILS URLS
+    path('api/email/group/<int:group_id>', sendEmailToGroup),
 
 ]

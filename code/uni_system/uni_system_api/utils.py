@@ -1,5 +1,8 @@
 from datetime import datetime
 import random
+from decouple import config
+from django.core.mail import EmailMessage
+
 
 FACULTY_CHOICES = (
     ('FEA', 'FEA'),
@@ -24,3 +27,13 @@ def gen_student_num(fac):
     stud_num = f'{datetime.today().year % 100}{faculties[fac]}{random.randrange(1, 10**5):05}'
 
     return int(stud_num)
+
+def send_email(subject, body, from_email, to):
+    email = EmailMessage(
+        subject,
+        body,
+        from_email,
+        to
+    )
+    # email.attach_file()
+    email.send()

@@ -3,7 +3,11 @@ from collections import defaultdict
 from django.contrib.auth import authenticate
 from django.db.models import Count
 from django.http import JsonResponse, HttpResponse
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
+from .utils import send_email
 from .models import StudentProfile, UniUser, Role, Grade, Group, Discipline, DisciplineSchedule, Survey, Major, \
     SurveyResolveLog
 from rest_framework import generics, permissions, status
@@ -253,3 +257,19 @@ class MajorList(generics.ListCreateAPIView):
     queryset = Major.objects.all()
 
 '''MAJOR API'''
+
+'''EMAILS API'''
+
+@api_view(["POST"])
+@permission_classes((IsAuthenticated,))
+def sendEmailToGroup(request, group_id):
+
+    students = StudentProfile.objects.filter(group__id=group_id).values_list('user__email', flat=True)
+
+    send_email(request.data.get('subject', ''), request.data.get('body_text', ''),
+               str(request.user.email), list(students))
+
+    return JsonResponse(request.data, safe=False)
+
+
+'''END EMAILS API'''

@@ -43,6 +43,9 @@ export class Teachers extends Component {
                     email: values.email
                 }
                 this.props.addTeacher(values_to_post);
+                this.setState({
+                    showTeacherFormAdd: false,
+                });
             }
         });
     };
