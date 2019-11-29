@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development --watch ./uni_system/uni_system_fe/src/index.js --output ./uni_system/uni_system_fe/static/frontend/main.js ",
+    "dev": "webpack --mode development --watch --progress ./uni_system/uni_system_fe/src/index.js --output ./uni_system/uni_system_fe/static/frontend/main.js ",
     "build": "webpack --mode production ./uni_system/uni_system_fe/src/index.js --output ./uni_system/uni_system_fe/static/frontend/main.js "
   },
   "keywords": [],
@@ -30,6 +30,7 @@
     "react-dnd": "^5.0.0",
     "react-dnd-html5-backend": "^5.0.1",
     "react-dom": "^16.9.0",
+    "react-highlight-words": "^0.16.0",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.2",
     "recharts": "^1.8.5",

@@ -24,62 +24,23 @@ import {
   Table,
   Modal
 } from 'antd';
-
+import Highlighter from 'react-highlight-words';
+import {recompose} from '../../../utils';
 const { Option } = Select;
+
 
 export class StudentTable extends Component {
 
     constructor(props){
         super(props);
 
-        const columns = [
-            {
-                title: 'First Name',
-                dataIndex: 'first_name',
-                key: 'first_name',
-                render: (text, record) => <a onClick={(e) => {this.showUserDetail(record)}}>{text}</a>,
-            },
-            {
-                title: 'Last Name',
-                dataIndex: 'last_name',
-                key: 'last_name',
-            },
-            {
-                title: 'Email',
-                dataIndex: 'email',
-                key: 'email',
-            },
-            {
-                title: 'Student Num',
-                key: 'student_profile',
-                render: (text, record) => <p>{record.student_profile.student_num }</p>
-            },
-            {
-                title: "Add Grade",
-                key: "add_grade",
-                render: (text, record) => (
-                    <Button type="primary" onClick={(e) => {this.showGradeForm(record)}}>
-                        Add Grade
-                    </Button>
-                )
-            },
-            {
-                title: "Edit",
-                key: "edit",
-                render: (text, record) => (
-                    <Button type="primary" onClick={(e) => {this.edit(record)}}>
-                        Edit
-                    </Button>
-                )
-            }
-        ];
-
-
         this.state = {
-            table_columns: columns,
+//            table_columns: columns,
             visible: false,
             student: undefined,
             showStudentFormEdit: false,
+            searchText: '',
+            searchedColumn: '',
         }
     }
 
@@ -191,11 +152,121 @@ export class StudentTable extends Component {
         });
     }
 
+    getColumnSearchProps = (dataIndex, title) => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div style={{ padding: 8 }}>
+                <Input
+                    ref={node => {
+                        this.searchInput = node;
+                    }}
+                    placeholder={`Search ${title}`}
+                    value={selectedKeys[0]}
+                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                    style={{ width: 188, marginBottom: 8, display: 'block' }}
+                />
+                <Button
+                    type="primary"
+                    onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                    icon="search"
+                    size="small"
+                    style={{ width: 90, marginRight: 8 }}
+                >
+                    Search
+                </Button>
+                <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                    Reset
+                </Button>
+            </div>
+        ),
+        filterIcon: filtered => (
+            <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
+        ),
+        onFilter: (value, record) =>
+            recompose(record, dataIndex).toString().toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+                setTimeout(() => this.searchInput.select());
+            }
+        },
+        render: text => (
+            (this.state.searchedColumn === dataIndex) ?
+                <Highlighter
+                    highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                    searchWords={[this.state.searchText]}
+                    autoEscape
+                    textToHighlight={text.toString()}
+                />
+            : text
+        ),
+    });
+
+    handleSearch = (selectedKeys, confirm, dataIndex) => {
+        confirm();
+        this.setState({
+            searchText: selectedKeys[0],
+            searchedColumn: dataIndex,
+        });
+    };
+
+    handleReset = clearFilters => {
+        clearFilters();
+        this.setState({ searchText: '' });
+    };
+
+
     render() {
+
+        const columns = [
+            {
+                title: 'First Name',
+                dataIndex: 'first_name',
+                key: 'first_name',
+                render: (text, record) => <a onClick={(e) => {this.showUserDetail(record)}}>{text}</a>,
+            },
+            {
+                title: 'Last Name',
+                dataIndex: 'last_name',
+                key: 'last_name',
+                ...this.getColumnSearchProps('last_name', 'Last Name'),
+            },
+            {
+                title: 'Email',
+                dataIndex: 'email',
+                key: 'email',
+                ...this.getColumnSearchProps('email', 'Email'),
+            },
+            {
+                title: 'Student Num',
+                dataIndex: 'student_profile.student_num',
+                key: 'student_profile',
+                render: (text, record) => <p>{record.student_profile.student_num }</p>,
+                ...this.getColumnSearchProps('student_profile.student_num', 'Student Num'),
+            },
+            {
+                title: "Add Grade",
+                key: "add_grade",
+                render: (text, record) => (
+                    <Button type="primary" onClick={(e) => {this.showGradeForm(record)}}>
+                        Add Grade
+                    </Button>
+                )
+            },
+            {
+                title: "Edit",
+                key: "edit",
+                render: (text, record) => (
+                    <Button type="primary" onClick={(e) => {this.edit(record)}}>
+                        Edit
+                    </Button>
+                )
+            }
+        ];
+
 
         return (
         <>
-            <Table columns={this.state.table_columns} dataSource={this.props.students} pagination={{ pageSize: 25 }}
+            <Table columns={columns} dataSource={this.props.students} pagination={{ pageSize: 25 }}
                     rowKey='id'/>
             <GradeForm
               wrappedComponentRef={this.saveFormRef}
