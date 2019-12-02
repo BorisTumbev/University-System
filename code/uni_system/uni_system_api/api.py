@@ -1,15 +1,13 @@
-import json
+from decouple import config
 from collections import defaultdict
-from django.contrib.auth import authenticate
 from django.db.models import Count
 from django.http import JsonResponse, HttpResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
 from .utils import send_email
 from .models import StudentProfile, UniUser, Role, Grade, Group, Discipline, DisciplineSchedule, Survey, Major, \
-    SurveyResolveLog
+    SurveyResolveLog, AuthTokenPassReset
 from rest_framework import generics, permissions, status
 from .serializers import StudentProfileSerializer, UniUserSerializerST, UniUserSerializerStGET, \
     TeacherProfileSerializer, UniUserSerializerTE, GradesSerializer, StudentGradeSerializer, GroupSerializer, \
@@ -148,7 +146,6 @@ class UniUserView(generics.RetrieveAPIView):
     def get_object(self):
         return self.request.user
 
-
 class UniLoginView(LoginView):
 
     def get_response(self):
@@ -164,6 +161,51 @@ class UniLoginView(LoginView):
 
         return orginal_response
 
+class ResetPassword(APIView):
+
+    def post(self, request):
+        print(request.data)
+        try:
+            email = request.data['email']
+        except:
+            return JsonResponse({'error':'Please provide email'})
+
+        user = UniUser.objects.filter(email=email)
+
+        if user:
+            token, _ = AuthTokenPassReset.objects.get_or_create(email=email)
+            body = f'Click this link {config("SITE_URL")}api/reset-pass/{token.token} to reset your password'
+            send_email('Pass reset', body, config('EMAIL_ACCOUNT'), [email])
+            return JsonResponse({'msg':'email is sent'})
+        else:
+            return JsonResponse({'error':'There is no such email in the system'})
+
+class ResetPasswordConfirm(APIView):
+
+    def get(self, request, token):
+
+        token_obj = AuthTokenPassReset.objects.filter(token=token)
+        if not token_obj:
+            return JsonResponse({'error':'token is invalid'})
+        else:
+            return HttpResponse(status=200)
+
+    def post(self, request, token):
+
+        token_obj = AuthTokenPassReset.objects.filter(token=token)
+        if token_obj:
+            user_obj = UniUser.objects.get(email=token_obj[0].email)
+            try:
+                password = request.data['password']
+                user_obj.set_password(password)
+                user_obj.save()
+                token_obj[0].delete()
+                return JsonResponse({'msg': 'password is changed successfully'})
+            except:
+                return JsonResponse({'error': 'Please provide password'})
+
+        else:
+            return JsonResponse({'error':'token is invalid'})
 
 '''END AUTH API'''
 

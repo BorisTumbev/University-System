@@ -2,6 +2,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models, transaction
 from django.contrib.auth.models import AbstractUser
 from .utils import FACULTY_CHOICES, gen_student_num
+import secrets
+
 
 class Role(models.Model):
   STUDENT = 1
@@ -127,3 +129,12 @@ class SurveyResolveLog(models.Model):
     answer   = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='answer_log')
 
     created  = models.DateTimeField(auto_now_add=True)
+
+class AuthTokenPassReset(models.Model):
+    token = models.CharField(max_length=40)
+    email  = models.EmailField()
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.token = secrets.token_urlsafe(20)
+        super().save(*args, **kwargs)

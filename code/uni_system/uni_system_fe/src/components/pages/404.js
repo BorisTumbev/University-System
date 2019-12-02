@@ -9,7 +9,7 @@ export class Error404 extends Component {
 
 
     backHome(){
-        window.location.href = "/";
+        this.props.history.push(`/`)
     }
 
     render() {

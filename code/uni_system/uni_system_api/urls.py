@@ -2,7 +2,8 @@ from . import views
 from django.urls import path
 from .api import StudentList, TeacherList, StudentDetail, TeacherDetail, GradesList, StudentGradesDetail, GroupList, \
     UniLoginView, UniUserView, DisciplineScheduleList, DisciplineList, SurveyList, MajorList, SurveyDetail, \
-    SurveyResolve, SurveyResolveDetail, SurveyToResolveDetail, sendEmailToGroup
+    SurveyResolve, SurveyResolveDetail, SurveyToResolveDetail, sendEmailToGroup, ResetPassword, ResetPasswordConfirm
+from rest_auth.views import LogoutView
 
 urlpatterns = [
     #STUDENTS URLS
@@ -23,6 +24,9 @@ urlpatterns = [
 
     #AUTH URLS
     path('api/login', UniLoginView.as_view()),
+    path('api/logout', LogoutView.as_view()),
+    path('api/reset-pass', ResetPassword.as_view()),
+    path('api/reset-pass/<token>', ResetPasswordConfirm.as_view()),
     path('api/user', UniUserView.as_view()),
 
     #DISCIPLINE URLS

@@ -27,9 +27,21 @@ export const authFail = error => {
 export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('expirationDate');
-    return {
-        type: AUTH_LOGOUT
+    return dispatch => {
+        axios.post('/api/logout')
+        .then(res =>{
+            dispatch({
+                type: AUTH_LOGOUT
+            });
+        })
+        .catch(err => {
+            console.log('logout error-> ' + err)
+//            dispatch(authFail(err))
+        })
     }
+//    return {
+//        type: AUTH_LOGOUT
+//    }
 }
 
 export const checkAuthTimeout = expirationTime => {
@@ -98,4 +110,3 @@ export const getUser = () => {
             })
         }
 }
-
