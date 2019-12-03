@@ -164,7 +164,7 @@ class UniLoginView(LoginView):
 class ResetPassword(APIView):
 
     def post(self, request):
-        print(request.data)
+
         try:
             email = request.data['email']
         except:
@@ -174,11 +174,11 @@ class ResetPassword(APIView):
 
         if user:
             token, _ = AuthTokenPassReset.objects.get_or_create(email=email)
-            body = f'Click this link {config("SITE_URL")}api/reset-pass/{token.token} to reset your password'
+            body = f'Click this link {config("SITE_URL")}#/reset-pass/{token.token} to reset your password'
             send_email('Pass reset', body, config('EMAIL_ACCOUNT'), [email])
             return JsonResponse({'msg':'email is sent'})
         else:
-            return JsonResponse({'error':'There is no such email in the system'})
+            return JsonResponse({'error':'There is no such email in the system'}, status=400)
 
 class ResetPasswordConfirm(APIView):
 
@@ -186,7 +186,7 @@ class ResetPasswordConfirm(APIView):
 
         token_obj = AuthTokenPassReset.objects.filter(token=token)
         if not token_obj:
-            return JsonResponse({'error':'token is invalid'})
+            return JsonResponse({'error':'token is invalid'}, status=400)
         else:
             return HttpResponse(status=200)
 
@@ -202,10 +202,10 @@ class ResetPasswordConfirm(APIView):
                 token_obj[0].delete()
                 return JsonResponse({'msg': 'password is changed successfully'})
             except:
-                return JsonResponse({'error': 'Please provide password'})
+                return JsonResponse({'error': 'Please provide password'}, status=400)
 
         else:
-            return JsonResponse({'error':'token is invalid'})
+            return JsonResponse({'error':'token is invalid'}, status=400)
 
 '''END AUTH API'''
 

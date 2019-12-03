@@ -9,6 +9,8 @@ import Profile from "./components/pages/Profile";
 import Survey from "./components/pages/Survey";
 import SurveyResolve from "./components/blocks/survey/SurveyResolve";
 import Error404 from "./components/pages/404";
+import ResetPassword from "./components/pages/ResetPassword";
+import ResetPasswordConfirm from "./components/pages/ResetPasswordConfirm";
 
 
 const NoMatchPage = () => {
@@ -27,6 +29,8 @@ const BaseRouter = () => (
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/survey" component={Survey} />
             <Route exact path="/survey/:id" component={SurveyResolve} />
+            <Route exact path="/reset-pass" component={ResetPassword} />
+            <Route exact path="/reset-pass/:token" component={ResetPasswordConfirm} />
             <Route component={Error404} />
         </Switch>
     </div>

@@ -1,5 +1,5 @@
 import {
-AUTH_START, AUTH_SUCCESS, AUTH_FAIL, AUTH_LOGOUT
+AUTH_START, AUTH_SUCCESS, AUTH_FAIL, AUTH_LOGOUT, RESET_PASS_STATUS_CODE
 } from "./types";
 import axios from 'axios';
 
@@ -93,20 +93,71 @@ export const authCheckState = (user) => {
     }
 }
 
-
 export const getUser = () => {
-        const config = {
-            headers: {
-                "Authorization": "Token " + localStorage.getItem('token')
-            }
-        };
-        return dispatch => {
-            axios.get('/api/user', config)
-            .then(res =>{
-                dispatch(authCheckState(res.data))
-            })
-            .catch(err => {
-                console.log(err)
-            })
+    const config = {
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
         }
+    };
+    return dispatch => {
+        axios.get('/api/user', config)
+        .then(res =>{
+            dispatch(authCheckState(res.data))
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+}
+
+export const resetPassword = (email) => {
+
+    return dispatch => {
+        axios.post('/api/reset-pass', email)
+        .then(res =>{
+            console.log(res)
+            dispatch({
+                type: RESET_PASS_STATUS_CODE,
+                payload: res.status
+            });
+        })
+        .catch(err => {
+            dispatch({
+                type: RESET_PASS_STATUS_CODE,
+                payload: err.response.status
+            });
+        })
+    }
+}
+
+export const resetPasswordConfirm = (token, password) => {
+
+    return dispatch => {
+        axios.post(`/api/reset-pass/${token}`, password)
+        .then(res =>{
+//                dispatch(authCheckState(res.data))
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+}
+
+export const resetPasswordConfirmGET = (token) => {
+
+    return dispatch => {
+        axios.get(`/api/reset-pass/${token}`)
+        .then(res =>{
+            dispatch({
+                type: RESET_PASS_STATUS_CODE,
+                payload: res.status
+            });
+        })
+        .catch(err => {
+            dispatch({
+                type: RESET_PASS_STATUS_CODE,
+                payload: err.response.status
+            });
+        })
+    }
 }

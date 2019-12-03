@@ -52,7 +52,7 @@ export class Login extends Component {
                     />)}
                 </Form.Item>
                 <Form.Item>
-                    <a className="login-form-forgot" href="">
+                    <a className="login-form-forgot" href="#/reset-pass">
                     Forgot password
                     </a>
                     <Button type="primary" htmlType="submit" className="login-form-button">
