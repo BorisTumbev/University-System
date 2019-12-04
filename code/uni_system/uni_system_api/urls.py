@@ -2,7 +2,8 @@ from . import views
 from django.urls import path
 from .api import StudentList, TeacherList, StudentDetail, TeacherDetail, GradesList, StudentGradesDetail, GroupList, \
     UniLoginView, UniUserView, DisciplineScheduleList, DisciplineList, SurveyList, MajorList, SurveyDetail, \
-    SurveyResolve, SurveyResolveDetail, SurveyToResolveDetail, sendEmailToGroup, ResetPassword, ResetPasswordConfirm
+    SurveyResolve, SurveyResolveDetail, SurveyToResolveDetail, sendEmailToGroup, ResetPassword, ResetPasswordConfirm, \
+    DisciplineModelScheduleList
 from rest_auth.views import LogoutView
 
 urlpatterns = [
@@ -32,6 +33,7 @@ urlpatterns = [
     #DISCIPLINE URLS
     path('api/discipline_schedule/<int:major_pk>', DisciplineScheduleList.as_view()),
     path('api/discipline_schedule', DisciplineScheduleList.as_view()),
+    path('api/discipline_model_schedule', DisciplineModelScheduleList.as_view()),
     path('api/discipline', DisciplineList.as_view()),
 
     #SURVEY URLS

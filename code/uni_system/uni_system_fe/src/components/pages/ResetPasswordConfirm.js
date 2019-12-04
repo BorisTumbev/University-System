@@ -44,7 +44,8 @@ export class ResetPasswordConfirm extends Component {
                 var pass_dict = {
                     password: values.password
                 }
-                this.props.resetPasswordConfirm(this.props.match.params.token, pass_dict)
+                this.props.resetPasswordConfirm(this.props.match.params.token, pass_dict);
+                this.props.history.push(`/login`);
             }
         });
     };

@@ -59,6 +59,7 @@ export class GradeForm extends Component {
             }
         });
     };
+
     disciplineOptions(){
         return this.props.disciplines.map(function (e, index){
           return <Option key={e.id} value={e.id}>{e.name}</Option>

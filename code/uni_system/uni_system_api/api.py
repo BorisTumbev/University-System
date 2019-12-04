@@ -12,7 +12,7 @@ from rest_framework import generics, permissions, status
 from .serializers import StudentProfileSerializer, UniUserSerializerST, UniUserSerializerStGET, \
     TeacherProfileSerializer, UniUserSerializerTE, GradesSerializer, StudentGradeSerializer, GroupSerializer, \
     DisciplineSerializer, DisciplineScheduleSerializer, GradesSerializerPost, SurveySerializer, MajorSerializer, \
-    SurveyResolveSerializer
+    SurveyResolveSerializer, DisciplineModelScheduleSerializer
 from rest_auth.views import LoginView, APIView
 
 
@@ -225,6 +225,16 @@ class DisciplineList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = DisciplineSerializer
     queryset = Discipline.objects.all()
+
+class DisciplineModelScheduleList(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = DisciplineModelScheduleSerializer
+
+    def get_queryset(self):
+        # major_obj = Major.objects.first()
+        # major_id = self.kwargs.get('major_pk', major_obj.id)
+
+        return DisciplineSchedule.objects.all()
 
 '''END DISCIPLINE API'''
 

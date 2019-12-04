@@ -53,3 +53,25 @@ export const getDiscSchedule = (major_id = 0) => {
         })
     }
 }
+
+export const addDiscSchedule = (obj) => {
+    const config = {
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    };
+
+    return dispatch => {
+        axios.post('/api/discipline_model_schedule', obj, config)
+        .then(res =>{
+//            dispatch({
+//                type: GET_DISCIPLINE_SCHEDULE,
+//                payload: res.data
+//            });
+        })
+        .catch(err => {
+            console.log('add discipline schedule error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}

@@ -202,6 +202,18 @@ class DisciplineScheduleSerializer(serializers.ModelSerializer):
         return f'FREQ=WEEKLY;DTSTART={obj.start.strftime("%Y%m%dT%H%M%SZ")};' \
                f'UNTIL={obj.rrule_end.strftime("%Y%m%dT%H%M%SZ")};BYDAY={WEEKDAYS[obj.start.weekday()]}'
 
+class DisciplineModelScheduleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DisciplineSchedule
+        fields = ('id', 'group', 'type_of', 'start', 'end', 'rrule_end', 'discipline')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.context['request'].method == "GET":
+            self.fields['group'] = GroupSerializer()
+            self.fields['discipline'] = DisciplineSerializer()
+
 '''END DISCIPLINE SERIALIZERS'''
 
 '''GRADES SERIALIZERS'''
