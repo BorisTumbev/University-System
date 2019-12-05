@@ -203,6 +203,9 @@ class DisciplineScheduleSerializer(serializers.ModelSerializer):
                f'UNTIL={obj.rrule_end.strftime("%Y%m%dT%H%M%SZ")};BYDAY={WEEKDAYS[obj.start.weekday()]}'
 
 class DisciplineModelScheduleSerializer(serializers.ModelSerializer):
+    start = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
+    end = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
+    rrule_end = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
 
     class Meta:
         model = DisciplineSchedule

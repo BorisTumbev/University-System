@@ -1,5 +1,5 @@
 import {
-GET_DISCIPLINE_SCHEDULE, GET_DISCIPLINES
+GET_DISCIPLINE_SCHEDULE, GET_DISCIPLINES, GET_DISCIPLINE_MODEL_SCHEDULE
 } from "./types";
 import axios from 'axios';
 
@@ -71,6 +71,50 @@ export const addDiscSchedule = (obj) => {
         })
         .catch(err => {
             console.log('add discipline schedule error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}
+
+export const getDiscModelSchedule = () => {
+    const config = {
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    };
+
+    return dispatch => {
+        axios.get('/api/discipline_model_schedule', config)
+        .then(res =>{
+            dispatch({
+                type: GET_DISCIPLINE_MODEL_SCHEDULE,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            console.log('get discipline schedule error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}
+
+export const editDiscModelSchedule = (obj) => {
+    const config = {
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    };
+
+    return dispatch => {
+        axios.put(`/api/discipline_model_schedule/${obj.id}`, obj, config)
+        .then(res =>{
+//            dispatch({
+//                type: GET_DISCIPLINE_MODEL_SCHEDULE,
+//                payload: res.data
+//            });
+        })
+        .catch(err => {
+            console.log('edit discipline schedule error-> ' + err)
 //            dispatch(authFail(err))
         })
     }

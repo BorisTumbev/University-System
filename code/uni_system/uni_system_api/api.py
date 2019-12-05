@@ -229,12 +229,13 @@ class DisciplineList(generics.ListCreateAPIView):
 class DisciplineModelScheduleList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = DisciplineModelScheduleSerializer
+    queryset = DisciplineSchedule.objects.all()
 
-    def get_queryset(self):
-        # major_obj = Major.objects.first()
-        # major_id = self.kwargs.get('major_pk', major_obj.id)
+class DisciplineModelScheduleDetails(generics.UpdateAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = DisciplineModelScheduleSerializer
+    queryset = DisciplineSchedule.objects.all()
 
-        return DisciplineSchedule.objects.all()
 
 '''END DISCIPLINE API'''
 

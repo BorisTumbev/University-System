@@ -20,7 +20,8 @@ import {
   InputNumber,
   Switch,
   DatePicker,
-  TimePicker
+  TimePicker,
+  Modal
 } from 'antd';
 
 const { Option } = Select;
@@ -73,7 +74,9 @@ export class DisciplineScheduleForm extends Component {
         if (!this.props.isAuthenticated) {
             return <Redirect to="/login" />;
         }
+        const { visible, onCancel, onOk, form } = this.props;
         const { getFieldDecorator, getFieldValue } = this.props.form;
+
         const formItemLayout = {
           labelCol: {
             xs: { span: 24 },
@@ -96,52 +99,58 @@ export class DisciplineScheduleForm extends Component {
         };
 
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Form.Item {...formItemLayout} label="Group" hasFeedback>
-            {getFieldDecorator('group', {
-                rules: [{ required: true, message: 'Please select group!' }],
-            })(
-            <Select placeholder="Please select a group">
-                {this.groupsOptions()}
-            </Select>,
-            )}
-        </Form.Item>
-        <Form.Item {...formItemLayout} label="Discipline" hasFeedback>
-            {getFieldDecorator('discipline', {
-                rules: [{ required: true, message: 'Please select discipline!' }],
-            })(
-            <Select placeholder="Please select a discipline">
-                {this.disciplineOptions()}
-            </Select>,
-            )}
-        </Form.Item>
-        <Form.Item {...formItemLayout} label="Type" hasFeedback>
-          {getFieldDecorator('type', {
-            rules: [{ required: true, message: 'Please select type!' }],
-          })(
-            <Select placeholder="Please select a type">
-              <Option value="P">Practice</Option>
-              <Option value="L">Lecture</Option>
-            </Select>
-          )}
-        </Form.Item>
-        <Form.Item {...formItemLayout} label="Start">
-          {getFieldDecorator('start', config)(
-            <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />,
-          )}
-        </Form.Item>
-        <Form.Item {...formItemLayout} label="End">
-          {getFieldDecorator('end', config)(<TimePicker />)}
-        </Form.Item>
-        <Form.Item {...formItemLayout} label="End of whole practice">
-          {getFieldDecorator('rrule_end', config)(<DatePicker />)}
-        </Form.Item>
-        <Form.Item {...formItemLayoutWithOutLabel}>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
+        <>
+        <Modal
+          title="Discipline Schedule Form"
+          visible={visible}
+          onOk={onOk}
+          onCancel={onCancel}
+          okText="Submit"
+          width= '60%'
+        >
+          <Form onSubmit={this.handleSubmit}>
+            <Form.Item {...formItemLayout} label="Group" hasFeedback>
+                {getFieldDecorator('group', {
+                    rules: [{ required: true, message: 'Please select group!' }],
+                })(
+                <Select placeholder="Please select a group">
+                    {this.groupsOptions()}
+                </Select>,
+                )}
+            </Form.Item>
+            <Form.Item {...formItemLayout} label="Discipline" hasFeedback>
+                {getFieldDecorator('discipline', {
+                    rules: [{ required: true, message: 'Please select discipline!' }],
+                })(
+                <Select placeholder="Please select a discipline">
+                    {this.disciplineOptions()}
+                </Select>,
+                )}
+            </Form.Item>
+            <Form.Item {...formItemLayout} label="Type" hasFeedback>
+              {getFieldDecorator('type', {
+                rules: [{ required: true, message: 'Please select type!' }],
+              })(
+                <Select placeholder="Please select a type">
+                  <Option value="P">Practice</Option>
+                  <Option value="L">Lecture</Option>
+                </Select>
+              )}
+            </Form.Item>
+            <Form.Item {...formItemLayout} label="Start">
+              {getFieldDecorator('start', config)(
+                <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />,
+              )}
+            </Form.Item>
+            <Form.Item {...formItemLayout} label="End">
+              {getFieldDecorator('end', config)(<TimePicker />)}
+            </Form.Item>
+            <Form.Item {...formItemLayout} label="End of whole practice">
+              {getFieldDecorator('rrule_end', config)(<DatePicker />)}
+            </Form.Item>
+          </Form>
+      </Modal>
+    </>
     );
   }
 }
