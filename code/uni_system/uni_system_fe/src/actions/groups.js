@@ -33,5 +33,46 @@ export const getGroups = (id = 0) => {
     }
 }
 
+export const addGroup = (group) => {
+    const config = {
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    };
 
+    return dispatch => {
+        axios.post('/api/groups', group, config)
+        .then(res =>{
+//            dispatch({
+//                type: GET_GROUPS,
+//                payload: res.data
+//            });
+        })
+        .catch(err => {
+            console.log('add groups error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}
 
+export const editGroup = (group) => {
+    const config = {
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    };
+
+    return dispatch => {
+        axios.put(`/api/group/${group.id}`, group, config)
+        .then(res =>{
+//            dispatch({
+//                type: GET_GROUPS,
+//                payload: res.data
+//            });
+        })
+        .catch(err => {
+            console.log('edit group error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}

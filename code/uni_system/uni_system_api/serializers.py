@@ -14,10 +14,16 @@ class MajorSerializer(serializers.ModelSerializer):
 '''GROUP SERIALIZERS'''
 
 class GroupSerializer(serializers.ModelSerializer):
-    major = MajorSerializer()
+    # major = MajorSerializer()
     class Meta:
         model = Group
         fields = ('id', 'name', 'major')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.context and self.context['request'].method == "GET":
+            self.fields['major'] = MajorSerializer()
+
 
 '''END GROUP SERIALIZERS'''
 

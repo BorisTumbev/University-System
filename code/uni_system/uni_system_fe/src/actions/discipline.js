@@ -25,6 +25,49 @@ export const getDisciplines = () => {
     }
 }
 
+export const addDiscipline = (disc) => {
+    const config = {
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    };
+    return dispatch => {
+        axios.post('/api/discipline', disc, config)
+        .then(res =>{
+//            dispatch({
+//                type: GET_DISCIPLINES,
+//                payload: res.data
+//            });
+        })
+        .catch(err => {
+            console.log('add discipline error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}
+
+export const editDiscipline = (disc) => {
+    const config = {
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    };
+    return dispatch => {
+        axios.put(`/api/discipline/${disc.id}`, disc, config)
+        .then(res =>{
+//            dispatch({
+//                type: GET_DISCIPLINES,
+//                payload: res.data
+//            });
+        })
+        .catch(err => {
+            console.log('edit discipline error-> ' + err)
+//            dispatch(authFail(err))
+        })
+    }
+}
+
+
 export const getDiscSchedule = (major_id = 0) => {
     let url;
     const config = {

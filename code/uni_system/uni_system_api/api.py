@@ -125,10 +125,18 @@ class GroupList(generics.ListCreateAPIView):
     # queryset = Group.objects.all()
 
     def get_queryset(self):
-        major_obj = Major.objects.first()
-        major_id = self.kwargs.get('pk', major_obj.id)
+        if self.kwargs and self.kwargs['pk'] == 'all':
+            return Group.objects.all()
+        else:
+            major_obj = Major.objects.first()
+            major_id = self.kwargs.get('pk', major_obj.id)
 
-        return Group.objects.filter(major=major_id).order_by('name')
+            return Group.objects.filter(major=major_id).order_by('name')
+
+class GroupDetails(generics.UpdateAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = GroupSerializer
+    queryset = Group.objects.all()
 
 '''END GROUPS API'''
 
@@ -222,6 +230,11 @@ class DisciplineScheduleList(generics.ListCreateAPIView):
         return DisciplineSchedule.objects.filter(group__major=major_id)
 
 class DisciplineList(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = DisciplineSerializer
+    queryset = Discipline.objects.all()
+
+class DisciplineDetails(generics.UpdateAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = DisciplineSerializer
     queryset = Discipline.objects.all()

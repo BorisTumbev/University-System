@@ -3,16 +3,23 @@ import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { authLogin } from "../../actions/auth";
-import { addDiscSchedule } from "../../actions/discipline";
+import { addDiscSchedule, addDiscipline } from "../../actions/discipline";
+import { addGroup } from "../../actions/groups";
 import { Form, Icon, Input, Button, Checkbox, Menu } from 'antd';
 import DisciplineScheduleForm from '../blocks/control_panel/DisciplineScheduleForm';
 import DisciplineScheduleTable from '../blocks/control_panel/DisciplineScheduleTable';
+import GroupTable from '../blocks/control_panel/GroupTable';
+import GroupForm from '../blocks/control_panel/GroupForm';
+import DisciplineTable from '../blocks/control_panel/DisciplineTable';
+import DisciplineForm from '../blocks/control_panel/DisciplineForm';
 
 
 export class ControlPanel extends Component {
     state = {
         current: 'discipline_schedule',
-        showForm: false
+        showForm: false,
+        showGroupForm: false,
+        showDiscForm: false
     };
 
     handleClick = e => {
@@ -66,6 +73,75 @@ export class ControlPanel extends Component {
         });
     }
 
+
+//    GROUP METHODS
+
+    saveGroupFormRef = groupFormRef => {
+        this.groupFormRef = groupFormRef;
+    };
+
+    handleGroupOk(e) {
+        const { form } = this.groupFormRef.props;
+        form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                console.log(values);
+                this.props.addGroup(values);
+                this.setState({
+                    showGroupForm: false,
+                });
+            }
+        });
+    };
+
+    handleGroupCancel(e) {
+        this.setState({
+            showGroupForm: false,
+        });
+    };
+
+    showGroupForm(){
+        this.setState({
+            showGroupForm: true,
+        });
+    }
+
+
+//   END GROUP METHODS
+
+//   DISC METHODS
+
+    saveDiscFormRef = discFormRef => {
+        this.discFormRef = discFormRef;
+    };
+
+    handleDiscOk(e) {
+        const { form } = this.discFormRef.props;
+        form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                console.log(values);
+                this.props.addDiscipline(values);
+                this.setState({
+                    showDiscForm: false,
+                });
+            }
+        });
+    };
+
+    handleDiscCancel(e) {
+        this.setState({
+            showDiscForm: false,
+        });
+    };
+
+    showDiscForm(){
+        this.setState({
+            showDiscForm: true,
+        });
+    }
+
+
+//   END DISC METHODS
+
     render() {
         if (!this.props.isAuthenticated) {
             return <Redirect to="/login" />;
@@ -80,6 +156,22 @@ export class ControlPanel extends Component {
                 </>
             )
         }
+        else if(this.state.current === 'group'){
+            currentForm = (
+                <>
+                    <Button type="primary" onClick={(e) => {this.showGroupForm(e)}}>Add group</Button>
+                    <GroupTable />
+                </>
+            )
+        }
+        else if(this.state.current === 'discipline'){
+            currentForm = (
+                <>
+                    <Button type="primary" onClick={(e) => {this.showDiscForm(e)}}>Add discipline</Button>
+                    <DisciplineTable />
+                </>
+            )
+        }
 
         return (
             <>
@@ -90,15 +182,15 @@ export class ControlPanel extends Component {
                 </Menu.Item>
                 <Menu.Item key="group">
                     <Icon type="mail" />
-                    Group
+                    Groups
                 </Menu.Item>
                 <Menu.Item key="discipline">
                     <Icon type="mail" />
-                    Discipline
+                    Disciplines
                 </Menu.Item>
                 <Menu.Item key="major">
                     <Icon type="mail" />
-                    Major
+                    Majors
                 </Menu.Item>
             </Menu>
             {currentForm}
@@ -108,6 +200,20 @@ export class ControlPanel extends Component {
               visible={this.state.showForm}
               onOk={(e) => {this.handleOk(e)}}
               onCancel={(e) => {this.handleCancel(e)}}
+            />
+
+            <GroupForm
+              wrappedComponentRef={this.saveGroupFormRef}
+              visible={this.state.showGroupForm}
+              onOk={(e) => {this.handleGroupOk(e)}}
+              onCancel={(e) => {this.handleGroupCancel(e)}}
+            />
+
+            <DisciplineForm
+              wrappedComponentRef={this.saveDiscFormRef}
+              visible={this.state.showDiscForm}
+              onOk={(e) => {this.handleDiscOk(e)}}
+              onCancel={(e) => {this.handleDiscCancel(e)}}
             />
             </>
         );
@@ -123,6 +229,8 @@ const mapStateToProps = state => ({
 function mapDispatchToProps(dispatch) {
     return {
         addDiscSchedule: (obj) => dispatch(addDiscSchedule(obj)),
+        addGroup: (group) => dispatch(addGroup(group)),
+        addDiscipline: (disc) => dispatch(addDiscipline(disc)),
 //        login: (email, password) => dispatch(authLogin(email, password)),
   };
 }

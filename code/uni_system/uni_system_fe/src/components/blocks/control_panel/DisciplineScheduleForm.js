@@ -29,7 +29,7 @@ const { Option } = Select;
 export class DisciplineScheduleForm extends Component {
 
     componentDidMount(){
-        this.props.getGroups();
+        this.props.getGroups('all');
         this.props.getDisciplines();
     }
 
@@ -163,7 +163,7 @@ const mapStateToProps = state => ({
 
 function mapDispatchToProps(dispatch) {
     return {
-        getGroups: () => dispatch(getGroups()),
+        getGroups: (id) => dispatch(getGroups(id)),
         getDisciplines: () => dispatch(getDisciplines()),
         addDiscSchedule: (obj) => dispatch(addDiscSchedule(obj)),
   };
