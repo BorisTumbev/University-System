@@ -322,6 +322,10 @@ class MajorList(generics.ListCreateAPIView):
     serializer_class = MajorSerializer
     queryset = Major.objects.all()
 
+class MajorDetails(generics.UpdateAPIView):
+    serializer_class = MajorSerializer
+    queryset = Major.objects.all()
+
 '''MAJOR API'''
 
 '''EMAILS API'''

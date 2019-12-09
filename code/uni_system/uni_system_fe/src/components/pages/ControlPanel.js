@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { authLogin } from "../../actions/auth";
 import { addDiscSchedule, addDiscipline } from "../../actions/discipline";
 import { addGroup } from "../../actions/groups";
+import { addMajor } from "../../actions/major";
 import { Form, Icon, Input, Button, Checkbox, Menu } from 'antd';
 import DisciplineScheduleForm from '../blocks/control_panel/DisciplineScheduleForm';
 import DisciplineScheduleTable from '../blocks/control_panel/DisciplineScheduleTable';
@@ -12,6 +13,8 @@ import GroupTable from '../blocks/control_panel/GroupTable';
 import GroupForm from '../blocks/control_panel/GroupForm';
 import DisciplineTable from '../blocks/control_panel/DisciplineTable';
 import DisciplineForm from '../blocks/control_panel/DisciplineForm';
+import MajorTable from '../blocks/control_panel/MajorTable';
+import MajorForm from '../blocks/control_panel/MajorForm';
 
 
 export class ControlPanel extends Component {
@@ -19,7 +22,8 @@ export class ControlPanel extends Component {
         current: 'discipline_schedule',
         showForm: false,
         showGroupForm: false,
-        showDiscForm: false
+        showDiscForm: false,
+        showMajorForm: false
     };
 
     handleClick = e => {
@@ -142,6 +146,40 @@ export class ControlPanel extends Component {
 
 //   END DISC METHODS
 
+//  MAJOR METHODS
+
+    showMajorForm(){
+        this.setState({
+            showMajorForm: true,
+        });
+    }
+
+    saveMajorFormRef = majorFormRef => {
+        this.majorFormRef = majorFormRef;
+    };
+
+    handleMajorOk(e) {
+        const { form } = this.majorFormRef.props;
+        form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                console.log(values);
+                this.props.addMajor(values);
+                this.setState({
+                    showMajorForm: false,
+                });
+            }
+        });
+    };
+
+    handleMajorCancel(e) {
+        this.setState({
+            showMajorForm: false,
+        });
+    };
+
+//  END MAJOR METHODS
+
+
     render() {
         if (!this.props.isAuthenticated) {
             return <Redirect to="/login" />;
@@ -172,6 +210,15 @@ export class ControlPanel extends Component {
                 </>
             )
         }
+        else if(this.state.current === 'major'){
+            currentForm = (
+                <>
+                    <Button type="primary" onClick={(e) => {this.showMajorForm(e)}}>Add major</Button>
+                    <MajorTable />
+                </>
+            )
+        }
+
 
         return (
             <>
@@ -215,6 +262,14 @@ export class ControlPanel extends Component {
               onOk={(e) => {this.handleDiscOk(e)}}
               onCancel={(e) => {this.handleDiscCancel(e)}}
             />
+
+            <MajorForm
+              wrappedComponentRef={this.saveMajorFormRef}
+              visible={this.state.showMajorForm}
+              onOk={(e) => {this.handleMajorOk(e)}}
+              onCancel={(e) => {this.handleMajorCancel(e)}}
+            />
+
             </>
         );
     }
@@ -231,6 +286,7 @@ function mapDispatchToProps(dispatch) {
         addDiscSchedule: (obj) => dispatch(addDiscSchedule(obj)),
         addGroup: (group) => dispatch(addGroup(group)),
         addDiscipline: (disc) => dispatch(addDiscipline(disc)),
+        addMajor: (major) => dispatch(addMajor(major)),
 //        login: (email, password) => dispatch(authLogin(email, password)),
   };
 }
