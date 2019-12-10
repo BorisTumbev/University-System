@@ -1,0 +1,77 @@
+.logo {
+    height: 70px;
+    background-image: url('../images/logo.png');
+    background-repeat: no-repeat;
+    margin: 16px;
+    background-position: center;
+}
+
+.login-form {
+    max-width: 300px;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+}
+
+.login-form-forgot {
+    float: right;
+}
+
+.login-form-button {
+    width: 100%;
+}
+
+.login-page{
+    background-image: url('../images/login-background.jpg');
+    background-repeat: no-repeat;
+    height: 100vh;
+    background-position: left bottom;
+}
+
+.login-form-button {
+    background-color: #1e6f82;
+    border-color: #1e6f82;
+}
+
+.login-form-forgot {
+    color: #1e6f82;
+}
+
+.header{
+    background-image: url('../images/header.jpg') !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+
+.header{
+    height: 105px;
+}
+
+.profile-dd{
+    position: absolute;
+    right: 1%;
+    top: 2%;
+}
+
+.survey-form{
+    width: 50%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.question{
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dynamic-delete-button{
+    font-size: 25px;
+}
+
+.question-form{
+    width: 95%;
+}

@@ -30,36 +30,38 @@ export class Login extends Component {
         const { getFieldDecorator } = this.props.form;
 
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
-                <Form.Item>
-                        {getFieldDecorator('email', {
-                            rules: [{type: 'email', message: 'The input is not valid E-mail!'},
-                                    { required: true, message: 'Please input your E-mail!' }],
+            <div className="login-page">
+                <Form onSubmit={this.handleSubmit} className="login-form">
+                    <Form.Item>
+                            {getFieldDecorator('email', {
+                                rules: [{type: 'email', message: 'The input is not valid E-mail!'},
+                                        { required: true, message: 'Please input your E-mail!' }],
+                            })(
+                            <Input
+                                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                placeholder="Email"
+                            />)}
+                    </Form.Item>
+                    <Form.Item>
+                        {getFieldDecorator('password', {
+                            rules: [{ required: true, message: 'Please input your Password!' }],
                         })(
                         <Input
-                            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            placeholder="Email"
+                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            type="password"
+                            placeholder="Password"
                         />)}
-                </Form.Item>
-                <Form.Item>
-                    {getFieldDecorator('password', {
-                        rules: [{ required: true, message: 'Please input your Password!' }],
-                    })(
-                    <Input
-                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        type="password"
-                        placeholder="Password"
-                    />)}
-                </Form.Item>
-                <Form.Item>
-                    <a className="login-form-forgot" href="#/reset-pass">
-                    Forgot password
-                    </a>
-                    <Button type="primary" htmlType="submit" className="login-form-button">
-                    Log in
-                    </Button>
-                </Form.Item>
-            </Form>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit" className="login-form-button">
+                            Log in
+                        </Button>
+                        <a className="login-form-forgot" href="#/reset-pass">
+                            Forgot password
+                        </a>
+                    </Form.Item>
+                </Form>
+            </div>
         );
 
     }

@@ -17,7 +17,8 @@ import {
   Button,
   AutoComplete,
   InputNumber,
-  Switch
+  Switch,
+  Divider
 } from 'antd';
 
 const FormItem = Form.Item;
@@ -146,7 +147,7 @@ export class SurveyForm extends Component {
                         </Form.Item>
                         <Icon
                             className="dynamic-delete-button"
-                            type="minus-circle-o"
+                            type="delete"
                             onClick={() => that.removeA(a, i)}
                         />
                     </div>
@@ -154,21 +155,24 @@ export class SurveyForm extends Component {
 
             })
             return(
-                <div key={i} style={{marginLeft:"20px"}}>
-                    <Form.Item label={`question - ${i + 1}`}>
-                        {getFieldDecorator(`question-${e}`, {
-                        rules: [{ required: true,
-                                  message: 'Please input question!'
-                        }],
-                        })(
-                            <Input/>,
-                        )}
-                    </Form.Item>
-                    <Icon
-                        className="dynamic-delete-button"
-                        type="minus-circle-o"
-                        onClick={() => that.removeQ(e)}
-                    />
+                <div key={i}>
+                    <Divider>question {i+1}</Divider>
+                    <div className="question">
+                        <Form.Item className="question-form" label={'Title'}>
+                            {getFieldDecorator(`question-${e}`, {
+                            rules: [{ required: true,
+                                      message: 'Please input question!'
+                            }],
+                            })(
+                                <Input/>,
+                            )}
+                        </Form.Item>
+                        <Icon
+                            className="dynamic-delete-button"
+                            type="delete"
+                            onClick={() => that.removeQ(e)}
+                        />
+                    </div>
                     {answers}
                     <div className="VallAs" onClick={() => that.addA(i)}>
                         <span>+ Add Answer</span>
@@ -203,8 +207,8 @@ export class SurveyForm extends Component {
         };
 
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Form.Item {...formItemLayout} label="Title">
+      <Form className="survey-form" onSubmit={this.handleSubmit}>
+        <Form.Item label="Title">
             {getFieldDecorator('title', {
                 rules: [{ required: true,
                           message: 'Please input title!'
@@ -213,7 +217,7 @@ export class SurveyForm extends Component {
                 <Input/>,
             )}
         </Form.Item>
-        <Form.Item {...formItemLayout} label="Major" hasFeedback>
+        <Form.Item label="Major" hasFeedback>
             {getFieldDecorator('major', {
                 rules: [{ required: true, message: 'Please select major!' }],
             })(
@@ -223,12 +227,12 @@ export class SurveyForm extends Component {
             )}
         </Form.Item>
         {this.questionsRender()}
-        <FormItem {...formItemLayoutWithOutLabel}>
+        <FormItem>
           <Button type="dashed" onClick={this.addQ} style={{ width: "60%" }}>
             <Icon type="plus" /> Add question
           </Button>
         </FormItem>
-        <FormItem {...formItemLayoutWithOutLabel}>
+        <FormItem>
           <Button type="primary" htmlType="submit">
             Submit
           </Button>

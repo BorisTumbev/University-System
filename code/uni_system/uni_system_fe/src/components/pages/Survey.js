@@ -6,6 +6,7 @@ import { authLogin } from "../../actions/auth";
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import SurveyForm from '../blocks/survey/SurveyForm';
 import SurveyTable from '../blocks/survey/SurveyTable';
+import MainLayout from '../blocks/layouts/MainLayout'
 
 
 export class Survey extends Component {
@@ -14,8 +15,10 @@ export class Survey extends Component {
 
         return (
         <>
-            <SurveyTable />
-            <SurveyForm />
+            <MainLayout {...this.props}>
+                <SurveyTable />
+                <SurveyForm />
+            </MainLayout>
         </>
         );
 

@@ -6,6 +6,7 @@ import { authLogin } from "../../actions/auth";
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import UniScheduler from '../blocks/home/Scheduler'
 import ExamChart from '../blocks/home/ExamChart'
+import MainLayout from '../blocks/layouts/MainLayout'
 
 export class Home extends Component {
 
@@ -13,11 +14,15 @@ export class Home extends Component {
         if (!this.props.isAuthenticated) {
             return <Redirect to="/login" />;
         }
+        console.log('this.props')
+        console.log(this.props)
         return (
-        <>
-            <UniScheduler />
-            <ExamChart />
-        </>
+            <>
+                <MainLayout {...this.props}>
+                    <UniScheduler />
+                    <ExamChart />
+                </MainLayout>
+            </>
         );
 
     }

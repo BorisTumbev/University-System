@@ -15,13 +15,15 @@ import EmailForm from './EmailForm';
 
 const { Option } = Select;
 
-
 class UniScheduler extends Component{
     constructor(props){
         super(props);
 
         //let schedulerData = new SchedulerData(new moment("2017-12-18").format(DATE_FORMAT), ViewTypes.Week);
         var schedulerData = new SchedulerData(new moment().format(DATE_FORMAT), ViewTypes.Week);
+        console.log('schedulerData.config.schedulerWidth')
+        schedulerData.config.schedulerWidth = '85%'
+        console.log(schedulerData.config.schedulerWidth)
 //        schedulerData.localeMoment.locale('bg');
         this.state = {
             viewModel: schedulerData,

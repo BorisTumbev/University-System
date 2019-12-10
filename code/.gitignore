@@ -9,6 +9,7 @@ __pycache__/
 local_settings.py
 db.sqlite3
 .idea/**
-uni_system/uni_system_fe/static/frontend/**
+uni_system/uni_system_fe/static/frontend/main.css
+uni_system/uni_system_fe/static/frontend/main.js
 .env
 .DS_Store

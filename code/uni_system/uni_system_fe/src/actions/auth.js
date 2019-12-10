@@ -33,6 +33,7 @@ export const logout = () => {
             dispatch({
                 type: AUTH_LOGOUT
             });
+            window.location.reload();
         })
         .catch(err => {
             console.log('logout error-> ' + err)
