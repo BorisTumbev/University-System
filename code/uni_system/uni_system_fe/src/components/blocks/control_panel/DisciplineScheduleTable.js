@@ -226,7 +226,7 @@ export class DisciplineScheduleTable extends Component {
 
         return (
         <>
-            <Table columns={columns} dataSource={this.props.discipline_model_schedule} pagination={{ pageSize: 10 }}
+            <Table className='contr-panel-tbl' columns={columns} dataSource={this.props.discipline_model_schedule} pagination={{ pageSize: 10 }}
                     rowKey='id'/>
 
             <DisciplineScheduleForm

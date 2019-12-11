@@ -38,52 +38,33 @@ export class ResetPassword extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        const formItemLayout = {
-              labelCol: {
-                xs: { span: 12 },
-                sm: { span: 4 },
-              },
-              wrapperCol: {
-                xs: { span: 16 },
-                sm: { span: 8 },
-              },
-            };
-            const tailFormItemLayout = {
-              wrapperCol: {
-                xs: {
-                  span: 24,
-                  offset: 0,
-                },
-                sm: {
-                  span: 16,
-                  offset: 8,
-                },
-              },
-            };
+
         return (
             <>
                 { this.props.reset_pass_status_code !== 200 ? (
-                    <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-                        <Form.Item label="E-mail">
-                          {getFieldDecorator('email', {
-                            rules: [
-                              {
-                                type: 'email',
-                                message: 'The input is not valid E-mail!',
-                              },
-                              {
-                                required: true,
-                                message: 'Please input your E-mail!',
-                              },
-                            ],
-                          })(<Input />)}
-                        </Form.Item>
-                        <Form.Item>
-                          <Button type="primary" htmlType="submit">
-                            Submit
-                          </Button>
-                        </Form.Item>
-                    </Form>
+                    <div className='reset-pass-page'>
+                        <Form className="reset-pass-form" onSubmit={this.handleSubmit}>
+                            <Form.Item label="E-mail">
+                              {getFieldDecorator('email', {
+                                rules: [
+                                  {
+                                    type: 'email',
+                                    message: 'The input is not valid E-mail!',
+                                  },
+                                  {
+                                    required: true,
+                                    message: 'Please input your E-mail!',
+                                  },
+                                ],
+                              })(<Input />)}
+                            </Form.Item>
+                            <Form.Item>
+                              <Button type="primary" htmlType="submit">
+                                Submit
+                              </Button>
+                            </Form.Item>
+                        </Form>
+                    </div>
                 ) : (
                   <Result
                     status="success"

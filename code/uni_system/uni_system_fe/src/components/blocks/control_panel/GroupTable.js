@@ -176,7 +176,7 @@ export class GroupTable extends Component {
 
         return (
         <>
-            <Table columns={columns} dataSource={this.props.groups} pagination={{ pageSize: 10 }}
+            <Table className='contr-panel-tbl' columns={columns} dataSource={this.props.groups} pagination={{ pageSize: 10 }}
                     rowKey='id'/>
 
             <GroupForm

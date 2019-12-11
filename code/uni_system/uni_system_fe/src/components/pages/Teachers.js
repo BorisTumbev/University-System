@@ -6,6 +6,7 @@ import { authLogin } from "../../actions/auth";
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import TeacherForm from '../blocks/teachers/TeacherForm';
 import TeacherTable from '../blocks/teachers/TeacherTable';
+import MainLayout from '../blocks/layouts/MainLayout';
 
 
 export class Teachers extends Component {
@@ -69,9 +70,10 @@ export class Teachers extends Component {
 
         return (
         <>
-            <Button type="primary" onClick={(e) => {this.showTeacherFormAdd(e)}}>Add Teacher</Button>
-            <TeacherTable />
-
+            <MainLayout {...this.props}>
+                <Button className='add-btn' type="primary" onClick={(e) => {this.showTeacherFormAdd(e)}}>Add Teacher</Button>
+                <TeacherTable />
+            </MainLayout>
             <TeacherForm
               wrappedComponentRef={this.saveFormRef}
               visible={this.state.showTeacherFormAdd}

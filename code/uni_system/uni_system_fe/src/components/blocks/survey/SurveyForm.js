@@ -135,8 +135,8 @@ export class SurveyForm extends Component {
             answers = []
             that.state.answer_arr[e].map(function(a, a_i){
                 answers.push(
-                    <div key={a_i} style={{marginLeft:"65px"}}>
-                        <Form.Item label={`answer - ${a_i + 1}`}>
+                    <div className="answer" key={a_i}>
+                        <Form.Item className="answer_form" label={`answer - ${a_i + 1}`}>
                             {getFieldDecorator(`answer-${a}-${e}`, {
                                 rules: [{ required: true,
                                     message: 'Please input answer!'
@@ -156,7 +156,7 @@ export class SurveyForm extends Component {
             })
             return(
                 <div key={i}>
-                    <Divider>question {i+1}</Divider>
+                    <Divider className='question_divider'>question {i+1}</Divider>
                     <div className="question">
                         <Form.Item className="question-form" label={'Title'}>
                             {getFieldDecorator(`question-${e}`, {
@@ -175,7 +175,7 @@ export class SurveyForm extends Component {
                     </div>
                     {answers}
                     <div className="VallAs" onClick={() => that.addA(i)}>
-                        <span>+ Add Answer</span>
+                        <Icon type="plus" /> Add Answer
                     </div>
                 </div>
             )
@@ -227,7 +227,7 @@ export class SurveyForm extends Component {
             )}
         </Form.Item>
         {this.questionsRender()}
-        <FormItem>
+        <FormItem className='add_question'>
           <Button type="dashed" onClick={this.addQ} style={{ width: "60%" }}>
             <Icon type="plus" /> Add question
           </Button>

@@ -7,6 +7,7 @@ import { addStudent } from "../../actions/students";
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import StudentForm from '../blocks/students/StudentForm';
 import StudentTable from '../blocks/students/StudentTable';
+import MainLayout from '../blocks/layouts/MainLayout';
 
 
 export class Students extends Component {
@@ -66,9 +67,10 @@ export class Students extends Component {
         }
         return (
         <>
-            <Button type="primary" onClick={(e) => {this.showStudentFormAdd(e)}}>Add Student</Button>
-            <StudentTable />
-
+            <MainLayout {...this.props}>
+                <Button className="add-btn" type="primary" onClick={(e) => {this.showStudentFormAdd(e)}}>Add Student</Button>
+                <StudentTable />
+            </MainLayout>
             <StudentForm
               wrappedComponentRef={this.saveFormRef}
               visible={this.state.showStudentFormAdd}

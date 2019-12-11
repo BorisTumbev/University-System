@@ -71,69 +71,46 @@ export class ResetPasswordConfirm extends Component {
     render() {
 
         const { getFieldDecorator } = this.props.form;
-        const formItemLayout = {
-              labelCol: {
-                xs: { span: 12 },
-                sm: { span: 4 },
-              },
-              wrapperCol: {
-                xs: { span: 16 },
-                sm: { span: 8 },
-              },
-            };
-            const tailFormItemLayout = {
-              wrapperCol: {
-                xs: {
-                  span: 24,
-                  offset: 0,
-                },
-                sm: {
-                  span: 16,
-                  offset: 8,
-                },
-              },
-            };
-
-            var reset_pass_status_code = this.props.reset_pass_status_code
-
-
+        var reset_pass_status_code = this.props.reset_pass_status_code
 
         return (
             <>
-            { reset_pass_status_code === 200 ? (
-            <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-                <Form.Item label="Password" hasFeedback>
-                  {getFieldDecorator('password', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please input your password!',
-                      },
-                      {
-                        validator: this.validateToNextPassword,
-                      },
-                    ],
-                  })(<Input.Password />)}
-                </Form.Item>
-                <Form.Item label="Confirm Password" hasFeedback>
-                  {getFieldDecorator('confirm', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please confirm your password!',
-                      },
-                      {
-                        validator: this.compareToFirstPassword,
-                      },
-                    ],
-                  })(<Input.Password onBlur={this.handleConfirmBlur} />)}
-                </Form.Item>
-                <Form.Item>
-                  <Button type="primary" htmlType="submit">
-                    Submit
-                  </Button>
-                </Form.Item>
-            </Form>
+            { reset_pass_status_code !== 200 ? (
+                <div className='reset-pass-page'>
+                <Form className='reset-pass-conf-form' onSubmit={this.handleSubmit}>
+                    <Form.Item label="Password" hasFeedback>
+                      {getFieldDecorator('password', {
+                        rules: [
+                          {
+                            required: true,
+                            message: 'Please input your password!',
+                          },
+                          {
+                            validator: this.validateToNextPassword,
+                          },
+                        ],
+                      })(<Input.Password />)}
+                    </Form.Item>
+                    <Form.Item label="Confirm Password" hasFeedback>
+                      {getFieldDecorator('confirm', {
+                        rules: [
+                          {
+                            required: true,
+                            message: 'Please confirm your password!',
+                          },
+                          {
+                            validator: this.compareToFirstPassword,
+                          },
+                        ],
+                      })(<Input.Password onBlur={this.handleConfirmBlur} />)}
+                    </Form.Item>
+                    <Form.Item>
+                      <Button type="primary" htmlType="submit">
+                        Submit
+                      </Button>
+                    </Form.Item>
+                </Form>
+                </div>
             ) : (
                  <Result
                     status="warning"

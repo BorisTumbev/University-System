@@ -70,8 +70,83 @@
 
 .dynamic-delete-button{
     font-size: 25px;
+    color: #ff4d4f;
 }
 
 .question-form{
     width: 95%;
+}
+
+.add_question{
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+}
+
+.answer{
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 50px;
+}
+
+.answer_form{
+    width: 95%
+}
+
+.question_divider{
+    color: #1890ff !important;
+}
+
+.control-panel{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.contr-panel-menu{
+    width: 90%;
+    margin-bottom: 20px;
+    border-bottom: 0;
+}
+
+.contr-panel-add-btn{
+    width: 10%;
+}
+
+.contr-panel-tbl{
+    width: 100%
+}
+
+.add-btn{
+    left: 93%;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.reset-pass-form{
+    width: 20%;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.reset-pass-page{
+    background-image: url('../images/login-background.jpg');
+    background-repeat: no-repeat;
+    height: 100vh;
+    background-position: left bottom;
+}
+
+.reset-pass-conf-form{
+    width: 30%;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

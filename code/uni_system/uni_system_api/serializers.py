@@ -34,10 +34,14 @@ class StudentProfileSerializer(serializers.ModelSerializer):
         fields = ('id', 'qualification_type', 'group', 'faculty', 'semester')
 
 class StudentProfileSerializerGET(serializers.ModelSerializer):
-    group = GroupSerializer()
+    # group = GroupSerializer()
     class Meta:
         model = StudentProfile
         fields = ('id', 'student_num', 'qualification_type', 'group', 'faculty', 'semester')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['group'] = GroupSerializer(context=self.context)
 
 
 class UniUserSerializerST(serializers.ModelSerializer):
@@ -87,13 +91,17 @@ class UniUserSerializerST(serializers.ModelSerializer):
         return user_obj
 
 class UniUserSerializerStGET(serializers.ModelSerializer):
-    student_profile = StudentProfileSerializerGET()
+    # student_profile = StudentProfileSerializerGET()
     grades = serializers.SerializerMethodField()
 
     class Meta:
         model = UniUser
         fields = ('id', 'student_profile','grades' , 'is_superuser', 'username', 'first_name', 'last_name', 'surname',
                   'email', 'is_active')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['student_profile'] = StudentProfileSerializerGET(context=self.context)
 
     def get_grades(self, obj):
         return GradesSerializer(obj.student_profile.st_grades.all(), many=True).data

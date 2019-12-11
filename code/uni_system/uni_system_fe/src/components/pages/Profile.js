@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { getUser } from "../../actions/auth";
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import StudentDetails from '../blocks/students/StudentDetails'
+import MainLayout from '../blocks/layouts/MainLayout';
 
 
 export class Profile extends Component {
@@ -13,15 +14,25 @@ export class Profile extends Component {
     };
 
     componentDidMount(){
-        this.props.getUser();
+//        this.props.getUser();
     }
 
     render() {
         if (!this.props.isAuthenticated) {
             return <Redirect to="/login" />;
         }
+
+        var details_comp;
+        if(this.props.curr_user !== null){
+            details_comp = <StudentDetails {...this.props.curr_user} />
+        }
+
         return (
-            <StudentDetails {...this.props.curr_user} />
+        <>
+            <MainLayout {...this.props}>
+                {details_comp}
+            </MainLayout>
+            </>
         );
 
     }

@@ -15,6 +15,7 @@ import DisciplineTable from '../blocks/control_panel/DisciplineTable';
 import DisciplineForm from '../blocks/control_panel/DisciplineForm';
 import MajorTable from '../blocks/control_panel/MajorTable';
 import MajorForm from '../blocks/control_panel/MajorForm';
+import MainLayout from '../blocks/layouts/MainLayout';
 
 
 export class ControlPanel extends Component {
@@ -189,7 +190,7 @@ export class ControlPanel extends Component {
         if(this.state.current === 'discipline_schedule'){
             currentForm = (
                 <>
-                    <Button type="primary" onClick={(e) => {this.showForm(e)}}>Add Practice</Button>
+                    <Button className='contr-panel-add-btn' type="primary" onClick={(e) => {this.showForm(e)}}>Add Practice</Button>
                     <DisciplineScheduleTable />
                 </>
             )
@@ -222,26 +223,29 @@ export class ControlPanel extends Component {
 
         return (
             <>
-            <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
-                <Menu.Item key="discipline_schedule">
-                    <Icon type="mail" />
-                    Discipline Schedule
-                </Menu.Item>
-                <Menu.Item key="group">
-                    <Icon type="mail" />
-                    Groups
-                </Menu.Item>
-                <Menu.Item key="discipline">
-                    <Icon type="mail" />
-                    Disciplines
-                </Menu.Item>
-                <Menu.Item key="major">
-                    <Icon type="mail" />
-                    Majors
-                </Menu.Item>
-            </Menu>
-            {currentForm}
-
+            <MainLayout {...this.props}>
+                <div className='control-panel'>
+                    <Menu className='contr-panel-menu' onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
+                        <Menu.Item key="discipline_schedule">
+                            <Icon type="mail" />
+                            Discipline Schedule
+                        </Menu.Item>
+                        <Menu.Item key="group">
+                            <Icon type="mail" />
+                            Groups
+                        </Menu.Item>
+                        <Menu.Item key="discipline">
+                            <Icon type="mail" />
+                            Disciplines
+                        </Menu.Item>
+                        <Menu.Item key="major">
+                            <Icon type="mail" />
+                            Majors
+                        </Menu.Item>
+                    </Menu>
+                    {currentForm}
+                </div>
+            </MainLayout>
             <DisciplineScheduleForm
               wrappedComponentRef={this.saveFormRef}
               visible={this.state.showForm}

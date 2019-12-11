@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { authLogin } from "../../actions/auth";
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import UniScheduler from '../blocks/home/Scheduler'
-import ExamChart from '../blocks/home/ExamChart'
-import MainLayout from '../blocks/layouts/MainLayout'
+import UniScheduler from '../blocks/home/Scheduler';
+import ExamChart from '../blocks/home/ExamChart';
+import MainLayout from '../blocks/layouts/MainLayout';
 
 export class Home extends Component {
 

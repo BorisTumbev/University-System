@@ -183,7 +183,7 @@ export class DisciplineTable extends Component {
 
         return (
         <>
-            <Table columns={columns} dataSource={this.props.disciplines} pagination={{ pageSize: 10 }}
+            <Table className='contr-panel-tbl' columns={columns} dataSource={this.props.disciplines} pagination={{ pageSize: 10 }}
                     rowKey='id'/>
 
             <DisciplineForm

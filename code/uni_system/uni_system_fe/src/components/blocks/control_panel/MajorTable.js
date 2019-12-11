@@ -168,7 +168,7 @@ export class MajorTable extends Component {
 
         return (
         <>
-            <Table columns={columns} dataSource={this.props.majors} pagination={{ pageSize: 10 }}
+            <Table className='contr-panel-tbl' columns={columns} dataSource={this.props.majors} pagination={{ pageSize: 10 }}
                     rowKey='id'/>
 
             <MajorForm
