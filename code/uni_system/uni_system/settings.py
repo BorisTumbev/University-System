@@ -26,7 +26,7 @@ SECRET_KEY = '^!=h50i_#(qwxknjva&ps_n@qki-qk4vlf48348vtwv!3wryal'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['uni.touchpython.com', 'localhost']
 
 
 # Application definition
