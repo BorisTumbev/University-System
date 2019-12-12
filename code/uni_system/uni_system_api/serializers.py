@@ -208,9 +208,9 @@ class DisciplineScheduleSerializer(serializers.ModelSerializer):
 
     def get_bgColor(self, obj):
         if obj.type_of == "L":
-            return "#005cfe"
+            return "#349bf9"
         else:
-            return "#fe0000"
+            return "#c02628"
 
     def get_rrule(self, obj):
         return f'FREQ=WEEKLY;DTSTART={obj.start.strftime("%Y%m%dT%H%M%SZ")};' \

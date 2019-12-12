@@ -341,5 +341,18 @@ def sendEmailToGroup(request, group_id):
 
     return JsonResponse(request.data, safe=False)
 
+@api_view(["POST"])
+@permission_classes((IsAuthenticated,))
+def sendEmailForSurvey(request, major_id, survey_id):
+
+    students = StudentProfile.objects.filter(group__major__id=major_id).values_list('user__email', flat=True)
+
+    subject = 'Resolve this survey'
+    body_text = f'Please resolve this: {config("SITE_URL")}#/survey/{survey_id}'
+
+    send_email(subject, body_text,
+               str(request.user.email), list(students))
+
+    return JsonResponse(request.data, safe=False)
 
 '''END EMAILS API'''

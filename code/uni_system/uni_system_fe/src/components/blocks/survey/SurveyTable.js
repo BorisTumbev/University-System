@@ -3,6 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getSurveys, editSurvey } from "../../../actions/survey";
+import { sendSurveyEmail } from "../../../actions/email";
 import {
   Form,
   Input,
@@ -60,6 +61,14 @@ export class SurveyTable extends Component {
         this.props.editSurvey(record);
     }
 
+    send_emails(record){
+        console.log('send-emails');
+        console.log(record);
+//        record.is_active = true;
+        this.props.sendSurveyEmail(record.major.id, record.id);
+    }
+
+
     render() {
         console.log('vlezna v renderzzz');
         console.log(this.props.surveys);
@@ -99,6 +108,15 @@ export class SurveyTable extends Component {
                 )
             },
             {
+                title: "Send Emails",
+                key: "send_emails",
+                render: (text, record) => (
+                    <Button type='primary' onClick={(e) => {this.send_emails(record)}}>
+                        Send
+                    </Button>
+                )
+            },
+            {
                 title: "Edit",
                 key: "edit",
                 render: (text, record) => (
@@ -127,7 +145,7 @@ const mapStateToProps = state => ({
 function mapDispatchToProps(dispatch) {
     return {
         getSurveys: () => dispatch(getSurveys()),
-//        addGrade: (grade) => dispatch(addGrade(grade)),
+        sendSurveyEmail: (major_id, survey_id) => dispatch(sendSurveyEmail(major_id, survey_id)),
         editSurvey: (survey) => dispatch(editSurvey(survey)),
 //        editStudentPut: (student) => dispatch(editStudentPut(student)),
   };

@@ -3,7 +3,8 @@ from django.urls import path
 from .api import StudentList, TeacherList, StudentDetail, TeacherDetail, GradesList, StudentGradesDetail, GroupList, \
     UniLoginView, UniUserView, DisciplineScheduleList, DisciplineList, SurveyList, MajorList, SurveyDetail, \
     SurveyResolve, SurveyResolveDetail, SurveyToResolveDetail, sendEmailToGroup, ResetPassword, ResetPasswordConfirm, \
-    DisciplineModelScheduleList, DisciplineModelScheduleDetails, GroupDetails, DisciplineDetails, MajorDetails
+    DisciplineModelScheduleList, DisciplineModelScheduleDetails, GroupDetails, DisciplineDetails, MajorDetails, \
+    sendEmailForSurvey
 from rest_auth.views import LogoutView
 
 urlpatterns = [
@@ -53,5 +54,6 @@ urlpatterns = [
 
     #EMAILS URLS
     path('api/email/group/<int:group_id>', sendEmailToGroup),
+    path('api/email/survey/<int:major_id>/<int:survey_id>', sendEmailForSurvey),
 
 ]
