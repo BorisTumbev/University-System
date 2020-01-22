@@ -40,6 +40,8 @@ class DisciplineSchedule(models.Model):
     end        = models.DateTimeField(null=True)
     rrule_end  = models.DateTimeField(null=True)
     discipline = models.ForeignKey(Discipline, on_delete=models.CASCADE, related_name='disc_schedule')
+    teacher    = models.ForeignKey('TeacherProfile', on_delete=models.CASCADE, related_name='disc_schedule_te')
+    room       = models.CharField(max_length=50)
 
 class Grade(models.Model):
     discipline = models.ForeignKey(Discipline, on_delete=models.CASCADE, related_name='disc_grades')
