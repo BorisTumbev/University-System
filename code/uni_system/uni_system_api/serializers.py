@@ -193,18 +193,20 @@ class DisciplineScheduleSerializer(serializers.ModelSerializer):
     movable    = serializers.ReadOnlyField(default=False)
     bgColor    = serializers.SerializerMethodField()
     rrule      = serializers.SerializerMethodField()
+    teacher    = serializers.SerializerMethodField()
     start      = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
-    end      = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    end        = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
 
     class Meta:
         model = DisciplineSchedule
-        fields = ('id', 'resourceId','title' ,'type_of', 'start', 'end', 'bgColor', 'resizable', 'movable', 'rrule')
+        fields = ('id', 'resourceId','title' ,'type_of', 'start', 'end', 'bgColor', 'resizable', 'movable', 'rrule',
+                  'teacher', 'room')
 
     def get_resourceId(self, obj):
         return obj.group.id
 
     def get_title(self, obj):
-        return str(obj.discipline.name)
+        return f'{obj.discipline.name} {obj.room} {obj.teacher.user.first_name}'
 
     def get_bgColor(self, obj):
         if obj.type_of == "L":
@@ -215,6 +217,9 @@ class DisciplineScheduleSerializer(serializers.ModelSerializer):
     def get_rrule(self, obj):
         return f'FREQ=WEEKLY;DTSTART={obj.start.strftime("%Y%m%dT%H%M%SZ")};' \
                f'UNTIL={obj.rrule_end.strftime("%Y%m%dT%H%M%SZ")};BYDAY={WEEKDAYS[obj.start.weekday()]}'
+
+    def get_teacher(self, obj):
+        return obj.teacher.user.first_name
 
 class DisciplineModelScheduleSerializer(serializers.ModelSerializer):
     start = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
