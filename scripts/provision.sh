@@ -20,6 +20,7 @@ pip3 install djangorestframework==3.9.3 --user
 pip3 install django-rest-knox==4.0.1 --user
 sudo apt-get install python3.7-dev -y
 sudo apt-get install libmysqlclient-dev -y
+sudo apt-get install libssl-dev
 pip3 install mysqlclient==1.4.2 --user
 
 pip3 install cryptography==2.6.1 --user
@@ -28,8 +29,8 @@ pip3 install zeep==3.3.1 --user
 pip3 install python-decouple --user
 pip3 install pycryptodome==3.8.1 --user
 pip3 install django-kronos==1.0 --user
-pip3 install django-rest-auth ==0.9.5 --user
-
+pip3 install django-rest-auth==0.9.5 --user
+pip3 install python-decouple==3.1 --user
 #Install React
 # sudo apt-get install nodejs npm -y
 # sudo apt-get install nodejs=12.2.0 -y
