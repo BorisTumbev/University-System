@@ -1,4 +1,22 @@
 from django.test import TestCase
+from .models import UniUser
+
+
+class LogInTest(TestCase):
+    credentials = {
+        'email': 'testuser@test.com',
+        'password': 'secret'
+    }
+
+    def setUp(self):
+        UniUser.objects.create_user(**self.credentials)
+
+    def test_login(self):
+        # send login data
+        response = self.client.post('/api/login', self.credentials, follow=True)
+        # should be logged in now
+        self.assertEqual(response.status_code, 200)
+
 
 class StudentsTest(TestCase):
 
@@ -28,3 +46,10 @@ class StudentsTest(TestCase):
 
         self.assertEqual(response_post_students.status_code, 200)
         self.assertEqual(response_post_students.json(), dict())
+
+
+class EmailTest(TestCase):
+
+    def test_email(self):
+        response = self.client.post('api/email/group/1', follow=True)
+        self.assertEqual(response.status_code, 200)
