@@ -1,5 +1,5 @@
 import {
-GET_SURVEY, GET_SURVEY_LOG, GET_SURVEYS, SHOW_ON_HOME
+GET_SURVEY, GET_SURVEY_LOG, GET_SURVEYS, SHOW_ON_HOME, ADD_SURVEY
 } from "../actions/types";
 
 import {updateObject} from "../utils";
@@ -14,6 +14,13 @@ const initialState = {
 const getSurvey = (state, action) => {
     return updateObject(state, {
         survey: action.payload,
+    });
+}
+
+const addSurvey = (state, action) => {
+    return updateObject(state, {
+        survey: action.payload,
+        surveys:[ action.payload, ...state.surveys ]
     });
 }
 
@@ -38,6 +45,7 @@ const showOnHome = (state, action) => {
 const reducer = (state=initialState, action) => {
     switch (action.type) {
         case GET_SURVEY: return getSurvey(state, action);
+        case ADD_SURVEY: return addSurvey(state, action);
         case GET_SURVEY_LOG: return getSurveyLog(state, action);
         case GET_SURVEYS: return getSurveys(state, action);
         case SHOW_ON_HOME: return showOnHome(state, action);

@@ -12,6 +12,7 @@ const initialState = {
 const addTeacher = (state, action) => {
     return updateObject(state, {
         teacher: action.payload,
+        teachers:[ action.payload, ...state.teachers ]
     });
 }
 

@@ -1,5 +1,5 @@
 import {
-GET_SURVEY, GET_SURVEY_LOG, GET_SURVEYS, SHOW_ON_HOME
+GET_SURVEY, GET_SURVEY_LOG, GET_SURVEYS, SHOW_ON_HOME, ADD_SURVEY
 } from "./types";
 import axios from 'axios';
 
@@ -13,10 +13,10 @@ export const addSurvey = (survey) => {
     return dispatch => {
         axios.post('/api/survey', survey, config)
         .then(res =>{
-//            dispatch({
-//                type: GET_MAJORS,
-//                payload: res.data
-//            });
+            dispatch({
+                type: ADD_SURVEY,
+                payload: res.data
+            });
         })
         .catch(err => {
             console.log('add survey error-> ' + err)

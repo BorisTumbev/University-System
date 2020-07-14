@@ -58,6 +58,7 @@ export class SurveyResolveForm extends Component {
 
                 });
                 this.props.logSurvey(values_to_post);
+                this.props.history.push(`/thanks`)
             }
         });
     };

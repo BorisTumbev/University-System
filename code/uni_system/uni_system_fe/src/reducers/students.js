@@ -19,6 +19,7 @@ const getStudents = (state, action) => {
 const addStudent = (state, action) => {
     return updateObject(state, {
         student: action.payload,
+        students:[ action.payload, ...state.students ]
     });
 }
 

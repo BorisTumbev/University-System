@@ -112,7 +112,7 @@ export class SurveyForm extends Component {
 
                 var values_to_post = {
                     title: values.title,
-                    major: values.major,
+                    major_id: values.major,
                     questions: questions
                 };
                 this.props.addSurvey(values_to_post);

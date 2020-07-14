@@ -274,11 +274,12 @@ class QuestionSerializier(serializers.ModelSerializer):
 
 class SurveySerializer(serializers.ModelSerializer):
     questions = QuestionSerializier(source='question', many=True)
-    major = MajorSerializer()
+    major = MajorSerializer(read_only=True)
+    major_id = serializers.IntegerField(write_only=True, required=False)
 
     class Meta:
         model = Survey
-        fields = ('id', 'title', 'is_active', 'is_on_home', 'major', 'questions')
+        fields = ('id', 'title', 'is_active', 'is_on_home', 'major', 'major_id', 'questions')
 
     def update(self, instance, validated_data):
         questions = validated_data.pop('question')
@@ -299,8 +300,9 @@ class SurveySerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         questions = validated_data.pop('question')
+        major = Major.objects.get(id=validated_data.pop('major_id'))
 
-        s_obj = Survey(**validated_data)
+        s_obj = Survey(**validated_data, major=major)
         s_obj.save()
 
         for q in questions:

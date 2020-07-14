@@ -116,15 +116,6 @@ export class SurveyTable extends Component {
                     </Button>
                 )
             },
-            {
-                title: "Edit",
-                key: "edit",
-                render: (text, record) => (
-                    <Button disabled type="primary" onClick={(e) => {this.edit(record)}}>
-                        Edit
-                    </Button>
-                )
-            }
         ];
 
         return (

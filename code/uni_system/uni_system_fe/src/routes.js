@@ -12,6 +12,7 @@ import Error404 from "./components/pages/404";
 import ResetPassword from "./components/pages/ResetPassword";
 import ResetPasswordConfirm from "./components/pages/ResetPasswordConfirm";
 import ControlPanel from "./components/pages/ControlPanel";
+import Thanks from "./components/pages/Thanks";
 
 
 const NoMatchPage = () => {
@@ -33,6 +34,7 @@ const BaseRouter = () => (
             <Route exact path="/reset-pass" component={ResetPassword} />
             <Route exact path="/reset-pass/:token" component={ResetPasswordConfirm} />
             <Route exact path="/control-panel" component={ControlPanel} />
+            <Route exact path="/thanks" component={Thanks} />
             <Route component={Error404} />
         </Switch>
     </div>
