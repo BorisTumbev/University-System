@@ -19,7 +19,8 @@ import {
   InputNumber,
   Switch,
   Table,
-  Modal
+  Modal,
+  message
 } from 'antd';
 
 const { Option } = Select;
@@ -64,8 +65,8 @@ export class SurveyTable extends Component {
     send_emails(record){
         console.log('send-emails');
         console.log(record);
-//        record.is_active = true;
         this.props.sendSurveyEmail(record.major.id, record.id);
+        message.info('Email sent')
     }
 
 
@@ -83,6 +84,7 @@ export class SurveyTable extends Component {
                 title: 'Title',
                 dataIndex: 'title',
                 key: 'title',
+                render: (text, record) => <a href={`#/survey/${record.id}`}>{text}</a>
             },
             {
                 title: 'Major',

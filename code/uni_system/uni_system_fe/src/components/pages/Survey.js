@@ -12,12 +12,22 @@ import MainLayout from '../blocks/layouts/MainLayout'
 export class Survey extends Component {
 
     render() {
+        if (!this.props.isAuthenticated) {
+            return <Redirect to="/login" />;
+        }
+
+        var user = {}
+        if(this.props.user !== null){
+            user = this.props.user
+        }
 
         return (
         <>
             <MainLayout {...this.props}>
                 <SurveyTable />
-                <SurveyForm />
+                {user.is_superuser &&
+                    <SurveyForm />
+                }
             </MainLayout>
         </>
         );
@@ -28,7 +38,8 @@ export class Survey extends Component {
 //const LoginForm = Form.create()(Login);
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.token != null
+    isAuthenticated: state.auth.token != null,
+    user: state.auth.user
 });
 
 function mapDispatchToProps(dispatch) {

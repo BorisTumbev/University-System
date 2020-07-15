@@ -7,6 +7,7 @@ import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import TeacherForm from '../blocks/teachers/TeacherForm';
 import TeacherTable from '../blocks/teachers/TeacherTable';
 import MainLayout from '../blocks/layouts/MainLayout';
+import { addTeacher } from "../../actions/teachers";
 
 
 export class Teachers extends Component {
@@ -93,7 +94,7 @@ const mapStateToProps = state => ({
 
 function mapDispatchToProps(dispatch) {
     return {
-//        login: (email, password) => dispatch(authLogin(email, password)),
+        addTeacher: (teacher) => dispatch(addTeacher(teacher)),
   };
 }
 

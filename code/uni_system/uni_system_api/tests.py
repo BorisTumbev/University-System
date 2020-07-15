@@ -9,7 +9,9 @@ class LogInTest(TestCase):
     }
 
     def setUp(self):
-        UniUser.objects.create_user(**self.credentials)
+        user_obj = UniUser(email=self.credentials['email'])
+        user_obj.set_password(self.credentials['password'])
+        user_obj.save()
 
     def test_login(self):
         # send login data
@@ -32,7 +34,7 @@ class StudentsTest(TestCase):
                     "group":3,
                     "faculty":"FEA",
                     "semester":1
-                 },
+            },
             "password":"admin",
             "is_superuser":False,
             "username":"Lupe.Bruen",
@@ -51,5 +53,5 @@ class StudentsTest(TestCase):
 class EmailTest(TestCase):
 
     def test_email(self):
-        response = self.client.post('api/email/group/1', follow=True)
+        response = self.client.post('/api/email/group/1', follow=True)
         self.assertEqual(response.status_code, 200)

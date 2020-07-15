@@ -30,14 +30,18 @@ export class MainLayout extends Component {
     handleButtonClick(e) {
 //      message.info('Click on left button.');
       console.log('click left button', e);
-      this.props.history.push('/profile');
+      if(this.props.user.hasOwnProperty('student_profile')){
+        this.props.history.push('/profile');
+      }
     }
 
     handleMenuClick(e) {
     //      message.info('Click on menu item.');
         console.log('click', e);
         if(e.key === 'details'){
-            this.props.history.push('/profile');
+            if(this.props.user.hasOwnProperty('student_profile')){
+                this.props.history.push('/profile');
+            }
         }
         else if(e.key === 'logout'){
             this.props.logout();
@@ -65,6 +69,11 @@ export class MainLayout extends Component {
     }
 
     render() {
+        var user = {}
+        if(this.props.user !== null){
+            user = this.props.user
+        }
+
 
         const menu = (
           <Menu onClick={(e) => {this.handleMenuClick(e)}}>
@@ -96,22 +105,26 @@ export class MainLayout extends Component {
                   <Icon type="pie-chart" />
                   <span>Surveys</span>
                 </Menu.Item>
-                <Menu.Item key="control">
-                  <Icon type="control" />
-                  <span>Control Panel</span>
-                </Menu.Item>
-                <SubMenu
-                  key="sub1"
-                  title={
-                    <span>
-                      <Icon type="user" />
-                      <span>Users</span>
-                    </span>
-                  }
-                >
-                  <Menu.Item key="student">Students</Menu.Item>
-                  <Menu.Item key="teacher">Teachers</Menu.Item>
-                </SubMenu>
+                {user.is_superuser &&
+                    <Menu.Item key="control">
+                      <Icon type="control" />
+                      <span>Control Panel</span>
+                    </Menu.Item>
+                }
+                {user.is_superuser &&
+                    <SubMenu
+                      key="sub1"
+                      title={
+                        <span>
+                          <Icon type="user" />
+                          <span>Users</span>
+                        </span>
+                      }
+                    >
+                      <Menu.Item key="student">Students</Menu.Item>
+                      <Menu.Item key="teacher">Teachers</Menu.Item>
+                    </SubMenu>
+                }
               </Menu>
             </Sider>
             <Layout>
@@ -132,7 +145,7 @@ export class MainLayout extends Component {
 }
 
 const mapStateToProps = state => ({
-//    survey_log: state.survey.survey_log
+    user: state.auth.user
 });
 
 function mapDispatchToProps(dispatch) {

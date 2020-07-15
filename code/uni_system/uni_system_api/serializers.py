@@ -88,7 +88,7 @@ class UniUserSerializerST(serializers.ModelSerializer):
 
         UniUser.objects.filter(id=user_obj.id).update(**user_data)
 
-        return user_obj
+        return UniUser.objects.get(id=user_obj.id)
 
 class UniUserSerializerStGET(serializers.ModelSerializer):
     # student_profile = StudentProfileSerializerGET()
@@ -118,7 +118,7 @@ class TeacherProfileSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if self.context['request'].method == "GET":
+        if self.context.get('request') and self.context['request'].method == "GET":
             self.fields['groups'] = GroupSerializer(many=True)
 
 class UniUserSerializerTE(serializers.ModelSerializer):
@@ -131,7 +131,7 @@ class UniUserSerializerTE(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['teacher_profile'] = TeacherProfileSerializer(context=self.context)
-        if self.context['request'].method == "PUT" or self.context['request'].method == "GET":
+        if self.context.get('request') and (self.context['request'].method == "PUT" or self.context['request'].method == "GET"):
             self.fields.pop('password')
 
 
@@ -174,7 +174,8 @@ class UniUserSerializerTE(serializers.ModelSerializer):
 
         UniUser.objects.filter(id=user_obj.id).update(**user_data)
 
-        return user_obj
+
+        return UniUser.objects.get(id=user_obj.id)
 
 '''END TEACHER SERIALIZERS'''
 
@@ -228,7 +229,7 @@ class DisciplineModelScheduleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DisciplineSchedule
-        fields = ('id', 'group', 'type_of', 'start', 'end', 'rrule_end', 'discipline')
+        fields = ('id', 'group', 'type_of', 'start', 'end', 'rrule_end', 'discipline', 'teacher', 'room')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

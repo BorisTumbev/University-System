@@ -1,5 +1,5 @@
 import {
-ADD_TEACHER, GET_TEACHERS
+ADD_TEACHER, GET_TEACHERS, EDIT_TEACHER
 } from "./types";
 import axios from 'axios';
 
@@ -43,10 +43,10 @@ export const editTeacher = (teacher) => {
     return dispatch => {
         axios.put(`/api/teachers/${teacher.id}`, teacher)
         .then(res =>{
-//            dispatch({
-//                type: EDIT_STUDENT_PUT,
-//                payload: res.data
-//            });
+            dispatch({
+                type: EDIT_TEACHER,
+                payload: res.data
+            });
         })
         .catch(err => {
             console.log('edit teacher error-> ' + err)

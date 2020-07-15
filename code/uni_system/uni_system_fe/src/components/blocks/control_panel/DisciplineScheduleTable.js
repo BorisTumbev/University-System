@@ -57,6 +57,8 @@ export class DisciplineScheduleTable extends Component {
             end: moment(record.end),
             rrule_end: moment(record.rrule_end),
             discipline: record.discipline.id,
+            teacher: record.teacher,
+            room: record.room,
         })
 //        this.props.editStudent(record);
 
@@ -149,6 +151,8 @@ export class DisciplineScheduleTable extends Component {
                     discipline: values.discipline,
                     start: values.start._d,
                     end: end,
+                    room: values.room,
+                    teacher: values.teacher,
                     rrule_end: rrule_end,
                     type_of: values.type
                 };

@@ -54,6 +54,8 @@ export class ControlPanel extends Component {
                     discipline: values.discipline,
                     start: values.start._d,
                     end: end,
+                    teacher: values.teacher,
+                    room: values.room,
                     rrule_end: rrule_end,
                     type_of: values.type
                 };

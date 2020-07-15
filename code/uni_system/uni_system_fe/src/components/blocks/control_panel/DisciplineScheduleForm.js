@@ -3,6 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getGroups } from "../../../actions/groups";
+import { getTeachers } from "../../../actions/teachers";
 import { getDisciplines, addDiscSchedule } from "../../../actions/discipline";
 import { addSurvey } from "../../../actions/survey";
 import {
@@ -31,6 +32,7 @@ export class DisciplineScheduleForm extends Component {
     componentDidMount(){
         this.props.getGroups('all');
         this.props.getDisciplines();
+        this.props.getTeachers();
     }
 
 
@@ -67,6 +69,12 @@ export class DisciplineScheduleForm extends Component {
     disciplineOptions(){
         return this.props.disciplines.map(function (e, index){
           return <Option key={e.id} value={e.id}>{e.name}</Option>
+        })
+    }
+
+    teacherOptions(){
+        return this.props.teachers.map(function (e, index){
+          return <Option key={e.id} value={e.teacher_profile.id}>{e.first_name}</Option>
         })
     }
 
@@ -124,8 +132,26 @@ export class DisciplineScheduleForm extends Component {
                 })(
                 <Select placeholder="Please select a discipline">
                     {this.disciplineOptions()}
-                </Select>,
+                </Select>
                 )}
+            </Form.Item>
+            <Form.Item {...formItemLayout} label="Teacher" hasFeedback>
+                {getFieldDecorator('teacher', {
+                    rules: [{ required: true, message: 'Please select teacher!' }],
+                })(
+                <Select placeholder="Please select a teacher">
+                    {this.teacherOptions()}
+                </Select>
+                )}
+            </Form.Item>
+            <Form.Item {...formItemLayout} label="Room">
+              {getFieldDecorator('room', {
+                rules: [{ required: true,
+                          message: 'Please input room!'
+                }],
+              })(
+                <Input/>
+              )}
             </Form.Item>
             <Form.Item {...formItemLayout} label="Type" hasFeedback>
               {getFieldDecorator('type', {
@@ -159,11 +185,13 @@ const mapStateToProps = state => ({
     groups: state.groups.groups,
     disciplines: state.discipline_schedule.disciplines,
     isAuthenticated: state.auth.token != null,
+    teachers: state.teachers.teachers,
 });
 
 function mapDispatchToProps(dispatch) {
     return {
         getGroups: (id) => dispatch(getGroups(id)),
+        getTeachers: () => dispatch(getTeachers()),
         getDisciplines: () => dispatch(getDisciplines()),
         addDiscSchedule: (obj) => dispatch(addDiscSchedule(obj)),
   };
