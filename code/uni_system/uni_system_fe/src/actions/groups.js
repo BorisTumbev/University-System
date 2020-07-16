@@ -1,5 +1,5 @@
 import {
-GET_GROUPS
+GET_GROUPS, ADD_GROUP, EDIT_GROUP
 } from "./types";
 import axios from 'axios';
 
@@ -43,10 +43,10 @@ export const addGroup = (group) => {
     return dispatch => {
         axios.post('/api/groups', group, config)
         .then(res =>{
-//            dispatch({
-//                type: GET_GROUPS,
-//                payload: res.data
-//            });
+            dispatch({
+                type: ADD_GROUP,
+                payload: res.data
+            });
         })
         .catch(err => {
             console.log('add groups error-> ' + err)
@@ -65,10 +65,10 @@ export const editGroup = (group) => {
     return dispatch => {
         axios.put(`/api/group/${group.id}`, group, config)
         .then(res =>{
-//            dispatch({
-//                type: GET_GROUPS,
-//                payload: res.data
-//            });
+            dispatch({
+                type: EDIT_GROUP,
+                payload: res.data
+            });
         })
         .catch(err => {
             console.log('edit group error-> ' + err)

@@ -1,5 +1,5 @@
 import {
-GET_MAJORS
+GET_MAJORS, EDIT_MAJOR, ADD_MAJOR
 } from "./types";
 import axios from 'axios';
 
@@ -34,10 +34,10 @@ export const addMajor = (major) => {
     return dispatch => {
         axios.post('/api/majors', major, config)
         .then(res =>{
-//            dispatch({
-//                type: GET_MAJORS,
-//                payload: res.data
-//            });
+            dispatch({
+                type: ADD_MAJOR,
+                payload: res.data
+            });
         })
         .catch(err => {
             console.log('add majors error-> ' + err)
@@ -55,10 +55,10 @@ export const editMajor = (major) => {
     return dispatch => {
         axios.put(`/api/majors/${major.id}`, major, config)
         .then(res =>{
-//            dispatch({
-//                type: GET_MAJORS,
-//                payload: res.data
-//            });
+            dispatch({
+                type: EDIT_MAJOR,
+                payload: res.data
+            });
         })
         .catch(err => {
             console.log('edit majors error-> ' + err)

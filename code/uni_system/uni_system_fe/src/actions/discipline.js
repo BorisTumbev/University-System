@@ -1,5 +1,6 @@
 import {
-GET_DISCIPLINE_SCHEDULE, GET_DISCIPLINES, GET_DISCIPLINE_MODEL_SCHEDULE
+    GET_DISCIPLINE_SCHEDULE, GET_DISCIPLINES, GET_DISCIPLINE_MODEL_SCHEDULE, ADD_DISCIPLINE, EDIT_DISCIPLINE, ADD_DISCIPLINE_MODEL_SCHEDULE,
+    EDIT_DISCIPLINE_MODEL_SCHEDULE
 } from "./types";
 import axios from 'axios';
 
@@ -34,10 +35,10 @@ export const addDiscipline = (disc) => {
     return dispatch => {
         axios.post('/api/discipline', disc, config)
         .then(res =>{
-//            dispatch({
-//                type: GET_DISCIPLINES,
-//                payload: res.data
-//            });
+            dispatch({
+                type: ADD_DISCIPLINE,
+                payload: res.data
+            });
         })
         .catch(err => {
             console.log('add discipline error-> ' + err)
@@ -55,10 +56,10 @@ export const editDiscipline = (disc) => {
     return dispatch => {
         axios.put(`/api/discipline/${disc.id}`, disc, config)
         .then(res =>{
-//            dispatch({
-//                type: GET_DISCIPLINES,
-//                payload: res.data
-//            });
+            dispatch({
+                type: EDIT_DISCIPLINE,
+                payload: res.data
+            });
         })
         .catch(err => {
             console.log('edit discipline error-> ' + err)
@@ -107,10 +108,10 @@ export const addDiscSchedule = (obj) => {
     return dispatch => {
         axios.post('/api/discipline_model_schedule', obj, config)
         .then(res =>{
-//            dispatch({
-//                type: GET_DISCIPLINE_SCHEDULE,
-//                payload: res.data
-//            });
+            dispatch({
+                type: ADD_DISCIPLINE_MODEL_SCHEDULE,
+                payload: res.data
+            });
         })
         .catch(err => {
             console.log('add discipline schedule error-> ' + err)
@@ -151,10 +152,10 @@ export const editDiscModelSchedule = (obj) => {
     return dispatch => {
         axios.put(`/api/discipline_model_schedule/${obj.id}`, obj, config)
         .then(res =>{
-//            dispatch({
-//                type: GET_DISCIPLINE_MODEL_SCHEDULE,
-//                payload: res.data
-//            });
+            dispatch({
+                type: EDIT_DISCIPLINE_MODEL_SCHEDULE,
+                payload: res.data
+            });
         })
         .catch(err => {
             console.log('edit discipline schedule error-> ' + err)
